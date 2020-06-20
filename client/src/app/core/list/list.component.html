@@ -1,0 +1,7 @@
+
+<div *ngFor="let item of collection" (click)="itemSelected(item.id);">
+  <mat-card class="list-item">
+    <h4>{{item.name}}</h4>
+    <p *ngIf="item.description && item.description.length">{{item.description}}</p>
+  </mat-card>
+</div>
