@@ -1,6 +1,5 @@
 import { OperationResponse } from '../../shared/contracts/OperationResponse';
 import { Account } from '../../shared/models/AccountData';
-import { IReportData } from '../data/report-data';
 import { IAccountData } from '../data/account-data';
 import { ObjectType } from '../enum/object-type';
 import { ID } from '../util/object-id';
