@@ -1,31 +1,30 @@
 name: Unit tests
 
 on:
+  push:
+    branches:
+    - master
   pull_request:
-    branches: [ master ]
-
+    branches: 
+    - master
 jobs:
   run:
     runs-on: ubuntu-latest
     env:
       NODE_ENV: ci
     steps:
-    - uses: actions/checkout@v2 # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-
+    - uses: actions/checkout@v2
     - name: Install client dependencies
       run: |
         npm install @angular/cli
         cd $GITHUB_WORKSPACE/client
         npm install
-    
     - name: Install server dependencies
       run: npm install
-  
     - name: Run client tests
       run: |
         cd $GITHUB_WORKSPACE/client
         npm test
-        
     - name: Run server tests
       run: |
         cd $GITHUB_WORKSPACE/server
