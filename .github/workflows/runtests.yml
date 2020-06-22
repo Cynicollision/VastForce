@@ -1,4 +1,4 @@
-name: UnitTests
+name: Unit tests
 
 on:
   pull_request:
@@ -7,10 +7,11 @@ on:
 jobs:
   run:
     runs-on: ubuntu-latest
-
+    env:
+      NODE_ENV: ci
     steps:
     - uses: actions/checkout@v2 # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-  
+
     - name: Install client dependencies
       run: |
         npm install @angular/cli
