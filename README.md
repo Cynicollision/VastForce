@@ -2,7 +2,7 @@
 VastForce
 
 ## Build/Develop
-[![Build Status](https://travis-ci.org/Cynicollision/VastForce.svg?branch=master)](https://travis-ci.org/Cynicollision/VastForce)
+![Unit tests](https://github.com/Cynicollision/VastForce/workflows/Unit%20tests/badge.svg)
 ### Prerequisites
 ```
 npm install -g @angular/cli
