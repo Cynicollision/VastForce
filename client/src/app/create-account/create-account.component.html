@@ -1,0 +1,12 @@
+
+<div id="create-account">
+  <h3>Thanks for signing in!</h3>
+  <p>Let's complete your registration:</p>
+  <mat-form-field>
+    <input matInput placeholder="User Name" [(ngModel)]="userName" required>
+    <mat-error *ngIf="userNameInvalid">{{getErrorMessage()}}</mat-error>
+  </mat-form-field>
+  <div class="register">
+    <button mat-raised-button color="primary" (click)="close()">Register</button>
+  </div>
+</div>

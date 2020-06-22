@@ -1,0 +1,18 @@
+{
+    "files.exclude": {
+        "client/src/main.js": true,
+        "client/src/main.js.map": true,
+        "client/src/polyfills.js": true,
+        "client/src/polyfills.js.map": true,
+        "client/src/test.js": true,
+        "client/src/test.js.map": true,
+        "client/src/app/**/*.js": true,
+        "client/src/app/**/*.js.map": true,
+        "client/src/environments/*.js": true,
+        "client/src/environments/*.js.map": true,
+        "server/**/*.js": true,
+        "server/**/*.js.map": true,
+        "shared/**/*.js": true,
+        "shared/**/*.js.map": true
+    }
+}

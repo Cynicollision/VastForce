@@ -1,0 +1,20 @@
+#profile-form {
+  display: flex;
+  flex-direction: column;
+
+  .controls {
+
+    .control-row {  
+      text-align: center;
+      width: 100%;
+    
+      button {
+        margin: 0 10px;
+      }
+
+      &:nth-child(2) {
+        margin-top: 80px;
+      }
+    }
+  }
+}
