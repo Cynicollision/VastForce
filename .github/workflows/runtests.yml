@@ -28,5 +28,6 @@ jobs:
         
     - name: Run server tests
       run: |
+        cd $GITHUB_WORKSPACE/server
         tsc
         npm test
