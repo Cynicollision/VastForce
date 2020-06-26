@@ -76,5 +76,5 @@ Client
 
 Server
 
-[![Dependency Status (server)](https://david-dm.org/Cynicollision/VastForce/status.svg)](https://david-dm.org/Cynicollision/VastForce?path=server)
-[![Dependency Status (server)](https://david-dm.org/Cynicollision/VastForce/dev-status.svg?type=dev)](https://david-dm.org/Cynicollision/VastForce?path=server&type=dev)
+[![Dependency Status (server)](https://david-dm.org/Cynicollision/VastForce/status.svg)](https://david-dm.org/Cynicollision/VastForce)
+[![Dependency Status (server)](https://david-dm.org/Cynicollision/VastForce/dev-status.svg?type=dev)](https://david-dm.org/Cynicollision/VastForce?type=dev)
