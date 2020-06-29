@@ -26,7 +26,7 @@ export class RouteGuardService implements CanActivate {
           if (!canActivate) {
             return Promise.resolve(false);
           }
-          return this.accountDataService.loadAccountData();
+          return this.accountDataService.resolveRoute();
         });
 
       this.waitService.wait(canActivatePromise).then(canActivate => {

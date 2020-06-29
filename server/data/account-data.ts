@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 import { OperationResponse } from '../../shared/contracts/OperationResponse';
-import { Account } from './../../shared/models/AccountData';
+import { Account } from '../../shared/models/Account';
 import { ResponseUtil } from '../util/response';
 
 export interface IAccountData {

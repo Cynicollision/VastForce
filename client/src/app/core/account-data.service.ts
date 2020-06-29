@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { OperationResponse } from '../../../../shared/contracts/OperationResponse';
-import { Account } from './../../../../shared/models/AccountData';
+import { Account } from './../../../../shared/models/Account';
+import { OrgDataMeta } from './../../../../shared/models/OrgData';
 import { Report } from './../../../../shared/models/Report';
-import { OrgData } from './../../../../shared/models/OrgData';
 import { APIService } from './api.service';
 import { AuthService } from './auth.service';
 
@@ -12,20 +12,42 @@ import { AuthService } from './auth.service';
 })
 export class AccountDataService {
   private _initialized = false;
-
   private _accountDataSource = new BehaviorSubject<Account>(<Account>{});
-  accountData = this._accountDataSource.asObservable();
-
+  private _orgSummaryDataSource = new BehaviorSubject<OrgDataMeta[]>([]);
   private _reportDataSource = new BehaviorSubject<Report[]>([]);
 
-  private _orgDataSource = new BehaviorSubject<OrgData>(<OrgData>{});
-  orgData = this._orgDataSource.asObservable();
+  accountData = this._accountDataSource.asObservable();
+  orgSummaryData = this._orgSummaryDataSource.asObservable();
+  reportData = this._reportDataSource.asObservable();
 
   get isInitialized(): boolean {
     return this._initialized;
   }
 
   constructor(private apiService: APIService, private authService: AuthService) {
+  }
+
+  resolveRoute(): Promise<boolean> {
+    let needsAccountData = !this.isInitialized;
+    let loadPromise = Promise.resolve(true);
+
+    if (needsAccountData) {
+      loadPromise = this.apiService.getAccountData(this.authService.accountID).then(response => {
+        if (!response.success || !response.data) {
+          return Promise.resolve(false);
+        }
+        this.init(response.data);
+        return Promise.resolve(true);
+      });
+    }
+    return loadPromise;
+  }
+
+  private init(data: Account){
+    this._accountDataSource.next(data);
+    this._orgSummaryDataSource.next(data.dataSources);
+    this._reportDataSource.next(data.reports);
+    this._initialized = true;
   }
 
   createReport(newReport: Report): Promise<OperationResponse<Report>> {
@@ -66,28 +88,5 @@ export class AccountDataService {
       }
       return response;
     });
-  }
-
-  loadAccountData(): Promise<boolean> {
-    let needsProfileData = !this.isInitialized;
-    let loadPromise = Promise.resolve(true);
-
-    if (needsProfileData) {
-      loadPromise = this.apiService.getAccountData(this.authService.accountID).then(response => {
-        if (!response.success || !response.data) {
-          return Promise.resolve(false);
-        }
-        this.init(response.data);
-        return Promise.resolve(true);
-      });
-    }
-    return loadPromise;
-  }
-
-  private init(data: Account){
-    this._initialized = true;
-    this._accountDataSource.next(data);
-    this._reportDataSource.next(data.reports);
-    this._orgDataSource.next(data.orgData);
   }
 }

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Environment } from '../../environments/environment';
+import { Environment } from './../../environments/environment';
 import { AuthService } from './auth.service';
-import { OperationResponse } from '../../../../shared/contracts/OperationResponse';
-import { Account } from '../../../../shared/models/AccountData';
-import { Report } from '../../../../shared/models/Report';
+import { OperationResponse } from './../../../../shared/contracts/OperationResponse';
+import { Account } from './../../../../shared/models/Account';
+import { Report } from './../../../../shared/models/Report';
 
 @Injectable({
   providedIn: 'root'
@@ -39,9 +39,8 @@ export class APIService {
     return this.makePOST(`${Environment.apiBaseURI}/register`, registration);
   }
 
-  // TODO: more flexible approach to loading Org Data.
   getAccountData(profileID: string): Promise<OperationResponse<Account>> {
-    return this.makeGET(`${Environment.apiBaseURI}/account-data?id=${profileID}`);
+    return this.makeGET(`${Environment.apiBaseURI}/account-summary?id=${profileID}`);
   }
 
   private makeGET<T>(url: string): Promise<OperationResponse<T>> {

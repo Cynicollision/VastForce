@@ -31,23 +31,10 @@ export class ProfileDetailComponent implements OnInit {
 
     subs.push(this.route.params.subscribe(params => {
       let profileID = params['id'];
-
-      subs.push(this.accountDataService.orgData.subscribe(orgData => {
-        let profiles = orgData.profiles || [];
-        let profile = profiles.find(b => b.id === profileID);
-        this.data = {...profile } || {};
-
-        if (!profile) {
-          this.notifyService.popError(`Couldn't find data for profile ID: ${profileID}`);
-          this.navigationService.goTo(Navigable.ProfileList);
-          return;
-        }
-      }));
     }));
 
     subs.forEach(sub => sub.unsubscribe());
   }
-
 
   cancel(): void {
     this.navigationService.goTo(Navigable.ProfileList);

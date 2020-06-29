@@ -10,10 +10,13 @@ export interface Profile extends SFMetadata {
 
 }
 
-export interface OrgData extends ResourceBase {
-    name?: string;
-    lastRefreshed?: string;
-    includedMetadataTypes?: SFMetadataType[]; 
+export interface OrgDataMeta {
     orgID?: string;
+    name?: string;
+    lastSyncDate?: string;
+    includedMetadataTypes?: SFMetadataType[]; 
+}
+
+export interface OrgData extends OrgDataMeta, ResourceBase {
     profiles?: Profile[];
 }

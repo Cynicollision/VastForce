@@ -16,23 +16,11 @@ export class ProfileListComponent implements OnInit, OnDestroy {
   hasNoProfiles = false;
 
   constructor(
-    private navigationService: NavigationService,
-    private orgDataService: AccountDataService) { 
+    private navigationService: NavigationService) { 
   }
 
   ngOnInit() {
     this.profiles = [];
-
-    let sub = this.orgDataService.orgData.subscribe(orgData => {
-      let profiles = orgData.profiles || [];
-
-      this.profiles = profiles.map(profile => this.mapProfileToListItem(profile))
-        .sort((a, b) => a.name > b.name ? 1 : -1); // TODO: probably wrong
-
-      this.hasNoProfiles = !this.profiles.length;
-    });
-
-    this.subscriptions.push(sub);
   }
 
   ngOnDestroy() {

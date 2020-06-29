@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import * as auth0 from 'auth0-js';
-import { Environment } from '../../environments/environment';
-import { Account } from '../../../../shared/models/AccountData';
+import { Environment } from './../../environments/environment';
+import { Account } from './../../../../shared/models/Account';
 
 export interface AuthResult {
   success: boolean;

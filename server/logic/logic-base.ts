@@ -57,12 +57,12 @@ export class ResourceLogic<T extends ResourceBase> implements IResourceLogic<T> 
     }
 
     getByOwnerID(accountExternalID: string, ownerAccountID: string): Promise<OperationResponse<T[]>> {
-        if (!accountExternalID || ownerAccountID) {
+        if (!accountExternalID || !ownerAccountID) {
             return ResponseUtil.failAsync<T[]>(`Couldn\'t fetch ${this.name} data: External User ID and Owner ID are required.`);
         }
 
         return this.checkUserOwnsAccount(accountExternalID, ownerAccountID).then(validationResponse => {
-           if (validationResponse.success) {
+           if (!validationResponse.success) {
                return ResponseUtil.failAsync<T[]>(validationResponse.message, validationResponse);
            }
 

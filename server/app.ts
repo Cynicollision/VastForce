@@ -19,7 +19,7 @@ const reportLogic = new ReportLogic(accountData, reportData);
 
 new ExpressAppServer(express())
     .configure((app: express.Application) => {
-        configureAuthRoutes(app, accountLogic);
+        configureAuthRoutes(app, accountLogic, orgDataLogic);
         configureAPIRoutes(app, orgDataLogic, reportLogic);
     })
     .start();

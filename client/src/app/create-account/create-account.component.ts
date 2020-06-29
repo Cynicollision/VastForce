@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Account } from '../../../../shared/models/AccountData';
+import { Account } from '../../../../shared/models/Account';
 import { APIService } from '../core/api.service';
 import { AuthService } from '../core/auth.service';
 import { DialogConfig } from '../core/dialog.service';

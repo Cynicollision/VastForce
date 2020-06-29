@@ -1,5 +1,5 @@
 import { OperationResponse } from '../../shared/contracts/OperationResponse';
-import { Account } from '../../shared/models/AccountData';
+import { Account } from '../../shared/models/Account';
 import { IAccountData } from '../data/account-data';
 import { ObjectType } from '../enum/object-type';
 import { ID } from '../util/object-id';
@@ -69,7 +69,7 @@ export class AccountLogic implements IAccountLogic {
             if (!response || !response.success || response.data.id !== accountID) {
                 return ResponseUtil.failAsync<Account>('Couldn\'t retrieve account data: Not logged in as claimed account owner.');
             }
-
+            
             return ResponseUtil.succeedAsync<Account>(account);
         });
     }
