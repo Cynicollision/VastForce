@@ -14,8 +14,8 @@ export interface ResourceMeta {
 export interface IResourceLogic<T> {
     create(accountExternalID: string, data: T): Promise<OperationResponse<T>>;
     delete(accountExternalID: string, id: string): Promise<OperationResponse<T>>;
-    get(id: string): Promise<OperationResponse<T>>;
-    getByOwnerID(ownerAccountID: string): Promise<OperationResponse<T[]>>;
+    get(accountExternalID: string, id: string): Promise<OperationResponse<T>>;
+    getByOwnerID(accountExternalID: string, ownerAccountID: string): Promise<OperationResponse<T[]>>;
     update(accountExternalID: string, data: T): Promise<OperationResponse<T>>;
 }
 
@@ -27,9 +27,13 @@ export class ResourceLogic<T extends ResourceBase> implements IResourceLogic<T> 
         private config: ResourceMeta) {
     }
 
-    protected checkUserOwnsAccount(externalID: string, accountID: string): Promise<boolean> {
-        return this.accountData.getByOwnerID(externalID).then(response => {
-            return response && response.success && response.data.id === accountID;
+    protected checkUserOwnsAccount(externalID: string, accountID: string): Promise<OperationResponse<T>> {
+        return this.accountData.getByExternalUserID(externalID).then(response => {
+            if (response.data.id !== accountID) {
+                return ResponseUtil.failAsync<T>(`Requestor does not own the resource.`);
+            }
+
+            return ResponseUtil.succeedAsync<T>();
         });
     }
 
@@ -37,21 +41,33 @@ export class ResourceLogic<T extends ResourceBase> implements IResourceLogic<T> 
         return this.config.name;
     }
 
-    // TODO: validate ownership.
-    get(id: string): Promise<OperationResponse<T>> {
-        if (!id) {
-            return ResponseUtil.failAsync(`Couldn\'t fetch ${this.name}: ID is required.`);
+    get(accountExternalID: string, id: string): Promise<OperationResponse<T>> {
+        if (!accountExternalID || !id) {
+            return ResponseUtil.failAsync(`Couldn\'t fetch ${this.name}: External User ID and Resource ID are required.`);
         }
 
-        return this.resourceData.get(id);
+        return this.resourceData.get(id).then(response => {
+            if (!response.success) {
+                return ResponseUtil.failAsync<T>(`Failed to retrieve resource: ${response.message}.`, response);
+            }
+
+            return this.checkUserOwnsAccount(accountExternalID, response.data.ownerAccountID)
+                .then(validationResponse => validationResponse.success ? response : validationResponse);
+        });
     }
 
-    getByOwnerID(ownerAccountID: string): Promise<OperationResponse<T[]>> {
-        if (!ownerAccountID) {
-            return ResponseUtil.failAsync(`Couldn\'t fetch ${this.name} data: Owner Account ID required.`);
+    getByOwnerID(accountExternalID: string, ownerAccountID: string): Promise<OperationResponse<T[]>> {
+        if (!accountExternalID || ownerAccountID) {
+            return ResponseUtil.failAsync<T[]>(`Couldn\'t fetch ${this.name} data: External User ID and Owner ID are required.`);
         }
 
-        return this.resourceData.getByOwnerID(ownerAccountID);
+        return this.checkUserOwnsAccount(accountExternalID, ownerAccountID).then(validationResponse => {
+           if (validationResponse.success) {
+               return ResponseUtil.failAsync<T[]>(validationResponse.message, validationResponse);
+           }
+
+            return this.resourceData.getByOwnerID(ownerAccountID);
+        });
     }
 
     create(accountExternalID: string, data: T): Promise<OperationResponse<T>> {
@@ -59,9 +75,9 @@ export class ResourceLogic<T extends ResourceBase> implements IResourceLogic<T> 
             return ResponseUtil.failAsync<T>(`Couldn\'t create ${this.name}: Name is required.`);
         }
 
-        return this.checkUserOwnsAccount(accountExternalID, data.ownerAccountID).then(isOwner => {
-            if (!isOwner) {
-                return ResponseUtil.failAsync<T>(`Couldn\'t create ${this.name}: Not logged in as claimed ${this.name} owner.`);
+        return this.checkUserOwnsAccount(accountExternalID, data.ownerAccountID).then(validationResponse => {
+            if (!validationResponse.success) {
+                return validationResponse;
             }
 
             data.id = ID.new(this.config.objectType);
@@ -69,14 +85,14 @@ export class ResourceLogic<T extends ResourceBase> implements IResourceLogic<T> 
         });
     }
 
-    update(profileExternalID: string, data: T): Promise<OperationResponse<T>> {
+    update(accountExternalID: string, data: T): Promise<OperationResponse<T>> {
         if (!data || !data.id || !data.name) {
             return ResponseUtil.failAsync<T>(`Couldn\'t update ${this.name}: ID and Name are required.`);
         }
 
-        return this.checkUserOwnsAccount(profileExternalID, data.ownerAccountID).then(isOwner => {
-            if (!isOwner) {
-                return ResponseUtil.failAsync<T>(`Couldn\'t create ${this.name}: Not logged in as claimed ${this.name} owner.`);
+        return this.checkUserOwnsAccount(accountExternalID, data.ownerAccountID).then(validationResponse => {
+            if (!validationResponse.success) {
+                return ResponseUtil.failAsync<T>(validationResponse.message, validationResponse);
             }
 
             return this.resourceData.update(data.id, data);
@@ -90,9 +106,9 @@ export class ResourceLogic<T extends ResourceBase> implements IResourceLogic<T> 
                 return ResponseUtil.failAsync<T>(`Couldn\'t retrieve ${this.name} for validation before deleting.`);
             }
 
-            return this.checkUserOwnsAccount(accountExternalID, response.data.ownerAccountID).then(isOwner => {
-                if (!isOwner) {
-                    return ResponseUtil.failAsync<T>(`Couldn\'t delete ${this.name}: Not logged in as claimed ${this.name} Owner.`);
+            return this.checkUserOwnsAccount(accountExternalID, response.data.ownerAccountID).then(validationResponse => {
+                if (!validationResponse.success) {
+                    return ResponseUtil.failAsync<T>(validationResponse.message, validationResponse);
                 }
     
                 return this.resourceData.delete(response.data.id);

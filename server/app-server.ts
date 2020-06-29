@@ -111,10 +111,16 @@ export class VastForceAppServer {
         });
 
         // app routes
-        // TODO: should be post and pass externalID 
+        app.get('/api/data-sources', (req: express.Request, res: express.Response) => {
+            let userExternalID = this.getReqExternalID(req);
+            let accountID = this.getReqParam(req, 'id');
+            this.orgDataLogic.getByOwnerID(userExternalID, accountID).then(response => res.send(response));
+        });
+
         app.get('/api/report', (req: express.Request, res: express.Response) => {
+            let userExternalID = this.getReqExternalID(req);
             let reportID = <string>req.query.id;
-            this.reportLogic.get(reportID).then(response => res.send(response));
+            this.reportLogic.get(userExternalID, reportID).then(response => res.send(response));
         });
 
         app.post('/api/report', (req: express.Request, res: express.Response) => {
@@ -136,8 +142,9 @@ export class VastForceAppServer {
         });
 
         app.get('/api/orgdata', (req: express.Request, res: express.Response) => {
+            let externalID = this.getReqExternalID(req);
             let orgDataID = <string>req.query.id;
-            this.orgDataLogic.get(orgDataID).then(response => res.send(response));
+            this.orgDataLogic.get(externalID, orgDataID).then(response => res.send(response));
         });
 
         // Default route
