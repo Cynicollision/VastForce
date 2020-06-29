@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WaitSpinnerComponent } from './wait-spinner.component';
-import { MatSpinner } from '@angular/material';
+import { MatSpinner } from '@angular/material/progress-spinner';
 
 describe('WaitSpinnerComponent', () => {
   let component: WaitSpinnerComponent;
