@@ -1,9 +1,10 @@
-import { IAccountLogic, AccountLogic } from '../logic/account-logic';
+import { IAccountLogic, AccountLogic } from './../logic/account-logic';
 import { MockReportData } from './mock-report-data';
 import { MockAccountData } from './mock-account-data';
 import { MockResourceLogic } from './mock-logic';
 import { MockDataController, TestData } from './mock-data';
-import { IResourceLogic } from 'logic/logic-base';
+import { IResourceLogic } from './../logic/logic-base';
+import { TestUtil } from './test-util';
 
 describe('VastForce app server', () => {
     let mockAccountData: MockAccountData;
@@ -12,8 +13,8 @@ describe('VastForce app server', () => {
 
     beforeEach(() => {
         mockAccountData = new MockAccountData();
-        testExternalID = mockAccountData.testExternalID;
-        testAccountID = mockAccountData.testAccountID;
+        testExternalID = TestUtil.testExternalID;
+        testAccountID = TestUtil.testAccountID;
     });
 
     describe('resource logic', () => {
@@ -30,9 +31,11 @@ describe('VastForce app server', () => {
         });
 
         it('retrieves a resource by ID', done => {
-            resourceLogic.get('123').then(response => {
+            resourceLogic.get(testExternalID, '123').then(response => {
                 expect(response.success).toBe(true);
                 expect(response.data).toBeDefined();
+                
+                TestUtil.logResponse(response);
                 done();
             });
         });
@@ -106,7 +109,7 @@ describe('VastForce app server', () => {
         });
 
         it('fails to retrieve a resource when no ID is specified', done => {
-            resourceLogic.get('').then(response => {
+            resourceLogic.get(testExternalID, '').then(response => {
                 expect(response.success).toBe(false);
                 done();
             });
@@ -120,8 +123,8 @@ describe('VastForce app server', () => {
         beforeEach(() => {
             accountLogic = new AccountLogic(mockAccountData);
 
-            testExternalID = mockAccountData.testExternalID;
-            testAccountID = mockAccountData.testAccountID;
+            testExternalID = TestUtil.testExternalID;
+            testAccountID = TestUtil.testAccountID;
         });
 
         it('can be instantiated', () => {
