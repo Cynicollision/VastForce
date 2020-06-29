@@ -6,26 +6,37 @@ import * as logger from 'morgan';
 import * as mongoose from 'mongoose';
 import * as path from 'path';
 import { Config } from './config';
-import { IAccountLogic } from './logic/account-logic';
-import { IReportLogic } from './logic/report-logic';
-import { IOrgDataLogic } from './logic/orgdata-logic';
-import { Account } from './../shared/models/AccountData';
-import { Report } from './../shared/models/Report';
+import { OperationResponse } from './../shared/contracts/OperationResponse';
+import { ResponseUtil } from './util/response';
 
-export class VastForceAppServer {
-    constructor(private accountLogic: IAccountLogic, private orgDataLogic: IOrgDataLogic, private reportLogic: IReportLogic) {
+interface AppConfigCallback {
+    (app: express.Application): void;
+}
+
+export class ExpressAppServer {
+    constructor(private app: express.Application) {
     }
 
-    start(app: express.Application) {
-        this.configureMiddleware(app);
-        this.configureRoutes(app);
+    private onConfigureCallback: AppConfigCallback;
+
+    configure(callback: AppConfigCallback): ExpressAppServer {
+        this.onConfigureCallback = callback;
+        return this;
+    }
+
+    start(): void {
+        this.configureMiddleware(this.app);
+        this.onConfigureCallback(this.app);
+        this.configureDefaultRoute(this.app);
         
-        this.connectDatabase().then(connected => {
-            if (connected) {
-                app.listen(Config.port, () => {
-                    console.log(`VastForce server listening on port ${Config.port} (${Config.dev ? 'DEVELOPMENT' : 'PRODUCTION'} mode).`);
-                });
+        this.connectDatabase().then(connectionResponse => {
+            if (!connectionResponse.success) {
+                ResponseUtil.logResponse(connectionResponse);
             }
+
+            this.app.listen(Config.port, () => {
+                console.log(`${Config.appName} server listening on port ${Config.port} (${Config.isDev ? 'DEVELOPMENT' : 'PRODUCTION'} mode).`);
+            });
         });
     }
 
@@ -36,7 +47,7 @@ export class VastForceAppServer {
         app.use(bodyParser.json());
 
         // development-only middleware
-        if (Config.dev) {
+        if (Config.isDev) {
             app.use(logger('dev'));
 
             // CORS for Angular development server 
@@ -77,91 +88,21 @@ export class VastForceAppServer {
         });
     }
 
-    private connectDatabase(): Promise<boolean> {
-        return new Promise<boolean>((resolve, reject) => {
-            mongoose.connect(Config.mongo, { useNewUrlParser: true });
+    private connectDatabase(): Promise<OperationResponse<boolean>> {
+        return new Promise<OperationResponse<boolean>>((resolve, reject) => {
+            mongoose.connect(Config.mongoUri, { useNewUrlParser: true });
             mongoose.connection.on('error', () => { 
-                console.log('Fatal: VastForce DB connection failed.');
-                resolve(false);
+                resolve(ResponseUtil.fail(`Fatal: ${Config.appName} database connection failed.`));
             });
             mongoose.connection.once('open', () => {
-                console.log('Connected to VastForce DB.');
-                resolve(true);
+                resolve(ResponseUtil.succeed());
             });
         });
     }
 
-    private configureRoutes(app: express.Application): void {
-        // account routes
-        app.post('/api/login', (req: express.Request, res: express.Response) => {
-            let externalID = (<any>req).user.sub || '';
-            this.accountLogic.login(externalID).then(response => res.send(response));
-        });
-
-        app.post('/api/register', (req: express.Request, res: express.Response) => {
-            let externalID = this.getReqExternalID(req);
-            let account = this.getReqBody<Account>(req);
-            this.accountLogic.register(externalID, account.name).then(response => res.send(response));
-        });
-
-        app.get('/api/account-data', (req: express.Request, res: express.Response) => {
-            let externalID = this.getReqExternalID(req);
-            let accountID = <string>req.query.id;
-            this.accountLogic.getAccountData(externalID, accountID).then(response => res.send(response));
-        });
-
-        // app routes
-        app.get('/api/data-sources', (req: express.Request, res: express.Response) => {
-            let userExternalID = this.getReqExternalID(req);
-            let accountID = this.getReqParam(req, 'id');
-            this.orgDataLogic.getByOwnerID(userExternalID, accountID).then(response => res.send(response));
-        });
-
-        app.get('/api/report', (req: express.Request, res: express.Response) => {
-            let userExternalID = this.getReqExternalID(req);
-            let reportID = <string>req.query.id;
-            this.reportLogic.get(userExternalID, reportID).then(response => res.send(response));
-        });
-
-        app.post('/api/report', (req: express.Request, res: express.Response) => {
-            let externalID = this.getReqExternalID(req);
-            let report = this.getReqBody<Report>(req);
-            this.reportLogic.create(externalID, report).then(response => res.send(response));
-        });
-
-        app.post('/api/report/:id', (req: express.Request, res: express.Response) => {
-            let externalID = this.getReqExternalID(req);
-            let report = this.getReqBody<Report>(req);
-            this.reportLogic.update(externalID, report).then(response => res.send(response));
-        });
-
-        app.delete('/api/report/:id', (req: express.Request, res: express.Response) => {
-            let externalID = this.getReqExternalID(req);
-            let reportID = this.getReqParam(req, 'id');
-            this.reportLogic.delete(externalID, reportID).then(response => res.send(response));
-        });
-
-        app.get('/api/orgdata', (req: express.Request, res: express.Response) => {
-            let externalID = this.getReqExternalID(req);
-            let orgDataID = <string>req.query.id;
-            this.orgDataLogic.get(externalID, orgDataID).then(response => res.send(response));
-        });
-
-        // Default route
+    private configureDefaultRoute(app: express.Application): void {
         app.get('*', (req: express.Request, res: express.Response) => {
             return res.sendFile(path.resolve(__dirname + './../public/index.html'));
         });
-    }
-
-    private getReqExternalID(req: express.Request): string {
-        return ((<any>req).user || {}).sub;
-    }
-
-    private getReqParam(req: express.Request, name: string): string {
-        return (req.params || {})[name];
-    }
-
-    private getReqBody<T>(req: express.Request): T {
-        return <T>(req.body || {});
     }
 }

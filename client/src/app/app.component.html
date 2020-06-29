@@ -5,7 +5,9 @@
       [opened]="!(isHandset$ | async)">
     <mat-toolbar>VastForce</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item routerLink="">Home</a>
+      <a mat-list-item routerLink="">Dashboard</a>
+      <mat-divider *ngIf="isLoggedIn"></mat-divider>
+      <a mat-list-item routerLink="app/data-sources" *ngIf="isLoggedIn" >Data Sources</a>
       <a mat-list-item routerLink="app/profiles" *ngIf="isLoggedIn" >Profile Browser</a>
       <a mat-list-item routerLink="app/query-permissions" *ngIf="isLoggedIn" >Permissions Query Tool</a>
       <a mat-list-item routerLink="about">About VastForce</a>

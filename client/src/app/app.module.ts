@@ -36,6 +36,8 @@ import { LoginComponent } from './login/login.component';
 import { ProfileDetailComponent } from './pages/profile-detail/profile-detail.component';
 import { ProfileListComponent } from './pages/profile-list/profile-list.component';
 import { QueryPermissionsComponent } from './pages/query-permissions/query-permissions.component';
+import { DataSourcesComponent } from './pages/data-sources/data-sources.component';
+import { DataSourceAddComponent } from './pages/data-source-add/data-source-add.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +52,8 @@ import { QueryPermissionsComponent } from './pages/query-permissions/query-permi
     ProfileDetailComponent,
     ProfileListComponent,
     QueryPermissionsComponent,
+    DataSourcesComponent,
+    DataSourceAddComponent,
   ],
   entryComponents: [
     ConfirmComponent,

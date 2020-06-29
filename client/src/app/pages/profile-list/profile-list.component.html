@@ -1,2 +1,5 @@
 
 <app-list [collection]="profiles" (itemSelected)="viewProfile($event)"></app-list>
+<div *ngIf="!profiles.length">
+    No profiles were found in the selected data source.
+</div>
