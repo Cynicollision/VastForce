@@ -1,6 +1,7 @@
 import { OperationResponse } from './../../shared/contracts/OperationResponse';
 import { ResourceBase } from './../../shared/models/ResourceBase';
 import { IResourceController } from './../data/controller-base';
+import { TestUtil } from './test-util';
 
 export interface TestData extends ResourceBase {
 }
@@ -9,13 +10,16 @@ export class MockDataController implements IResourceController<TestData> {
     protected collection = [];
 
     setCollection(data: TestData[]): void {
-        this.collection = data;
+        this.collection = data.map(value => {
+            value.ownerAccountID = TestUtil.testAccountID;
+            return value;
+        });
     }
 
     get(id: string): Promise<OperationResponse<TestData>> {
         return new Promise((resolve, reject) => {
-            let testRecipe = { id: id, name: 'Test Recipe' };
-            return resolve({ success: true, data: testRecipe });
+            let testResource: ResourceBase = { id: id, name: 'Test Resource', ownerAccountID: TestUtil.testAccountID };
+            return resolve({ success: true, data: testResource });
         });
     }
 

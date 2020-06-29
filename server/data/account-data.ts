@@ -4,8 +4,8 @@ import { Account } from './../../shared/models/AccountData';
 import { ResponseUtil } from '../util/response';
 
 export interface IAccountData {
-    get(id: string): Promise<OperationResponse<Account>>;
-    getByOwnerID(externalID: string): Promise<OperationResponse<Account>>;
+    // get(id: string): Promise<OperationResponse<Account>>;
+    getByExternalUserID(externalID: string): Promise<OperationResponse<Account>>;
     create(data: Account): Promise<OperationResponse<Account>>;
     update(id: string, data: Account): Promise<OperationResponse<Account>>;
 }
@@ -18,18 +18,7 @@ export class AccountData implements IAccountData {
         name: { type: 'string' },
     }));
 
-    get(id: string): Promise<OperationResponse<Account>> {
-        return new Promise((resolve, reject) => {
-            this.model.findOne({ id: id }, (err: any, doc: mongoose.Document) => {
-                if (err || !doc) {
-                    return resolve(ResponseUtil.fail(err || 'Invalid Account ID'));
-                }
-                return resolve(ResponseUtil.succeed(this.mapFromDocument(doc)));
-            });
-        });
-    }
-
-    getByOwnerID(externalID: string): Promise<OperationResponse<Account>> {
+    getByExternalUserID(externalID: string): Promise<OperationResponse<Account>> {
         return new Promise((resolve, reject) => {
             this.model.findOne({ externalID: externalID }, (err: any, doc: mongoose.Document) => {
                 if (err || !doc) {

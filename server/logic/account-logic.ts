@@ -18,7 +18,7 @@ export class AccountLogic implements IAccountLogic {
 
     login(externalID: string): Promise<OperationResponse<Account>> {
 
-        return this.accountData.getByOwnerID(externalID).then(response => {
+        return this.accountData.getByExternalUserID(externalID).then(response => {
             let account = response.data;
 
             if (!account) {
@@ -35,7 +35,7 @@ export class AccountLogic implements IAccountLogic {
             return ResponseUtil.failAsync<Account>('Couldn\'t register: External ID and User Name are required.');
         }
 
-        return this.accountData.getByOwnerID(externalID).then(response => {
+        return this.accountData.getByExternalUserID(externalID).then(response => {
             if (response.success) {
                 return ResponseUtil.failAsync<Account>('Account already exists with that External ID.');
             }
@@ -63,7 +63,7 @@ export class AccountLogic implements IAccountLogic {
             return ResponseUtil.failAsync('Couldn\'t retrieve account data: External ID and Account ID are required.');
         }
 
-        return this.accountData.getByOwnerID(externalID).then(response => {
+        return this.accountData.getByExternalUserID(externalID).then(response => {
             let account = response.data;
 
             if (!response || !response.success || response.data.id !== accountID) {
