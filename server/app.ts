@@ -4,8 +4,8 @@ import { AccountData } from './data/account-data';
 import { AccountLogic } from './logic/account-logic';
 import { ReportData } from './data/report-data';
 import { ReportLogic } from './logic/report-logic';
-import { OrgData } from 'data/org-data';
-import { OrgDataLogic } from 'logic/orgdata-logic';
+import { OrgData } from './data/org-data';
+import { OrgDataLogic } from './logic/orgdata-logic';
 
 const accountData = new AccountData();
 const reportData = new ReportData();
