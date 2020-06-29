@@ -42,20 +42,9 @@ gulp publish
 ### MongoDB setup
 Install MongoDB, then run the following to create the development database and user (credentials must match server/Config.ts):
 ```
-mongod VastForce
-db.createUser({  
- user:<username>,
- pwd:<password>,
- roles:[  
-  {  
-     role:"readWrite",
-     db:"VastForce"
-  }
- ],
- mechanisms:[  
-  "SCRAM-SHA-1"
- ]
-})
+mongo
+use vastforce
+db.createUser({ user: "localdev", pwd: "l0cald3v", roles: [ { role: "readWrite", db: "vastforce-dev" } ], passwordDigestor:"server"})
 ```
 ### Deploy to Heroku
 Full build and deploy process. Release branch must have built .js output included.
@@ -63,8 +52,7 @@ Full build and deploy process. Release branch must have built .js output include
 git checkout release
 git merge master
 gulp publish
-cd server
-tsc
+tsc -p server
 git commit -m <version>
 git push heroku release:master
 ```
