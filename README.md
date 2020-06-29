@@ -24,9 +24,8 @@ ng serve
 ### Server (Node/Express)
 Install dependencies, compile TypeScript, run tests:
 ```
-cd server
 npm install
-tsc
+tsc -p server
 npm test
 ```
 Then start the server:
