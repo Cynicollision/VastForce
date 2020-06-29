@@ -11,19 +11,25 @@ import { NavigationService, Navigable } from '../../core/navigation.service';
 })
 export class ProfileListComponent implements OnInit, OnDestroy {
   private subscriptions: any[] = [];
-  public profiles: ListItem[];
+
+  profiles: ListItem[];
+  hasNoProfiles = false;
 
   constructor(
     private navigationService: NavigationService,
-    private profileDataService: AccountDataService) { 
+    private orgDataService: AccountDataService) { 
   }
 
   ngOnInit() {
     this.profiles = [];
 
-    let sub = this.profileDataService.profileData.subscribe(profiles => {
+    let sub = this.orgDataService.orgData.subscribe(orgData => {
+      let profiles = orgData.profiles || [];
+
       this.profiles = profiles.map(profile => this.mapProfileToListItem(profile))
         .sort((a, b) => a.name > b.name ? 1 : -1); // TODO: probably wrong
+
+      this.hasNoProfiles = !this.profiles.length;
     });
 
     this.subscriptions.push(sub);

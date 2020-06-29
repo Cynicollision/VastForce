@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { OperationResponse } from '../../../../shared/contracts/OperationResponse';
 import { Account } from './../../../../shared/models/AccountData';
 import { Report } from './../../../../shared/models/Report';
-import { Profile } from './../../../../shared/models/OrgData';
+import { OrgData } from './../../../../shared/models/OrgData';
 import { APIService } from './api.service';
 import { AuthService } from './auth.service';
 
@@ -18,8 +18,8 @@ export class AccountDataService {
 
   private _reportDataSource = new BehaviorSubject<Report[]>([]);
 
-  private _profileDataSource = new BehaviorSubject<Profile[]>([]);
-  profileData = this._profileDataSource.asObservable();
+  private _orgDataSource = new BehaviorSubject<OrgData>(<OrgData>{});
+  orgData = this._orgDataSource.asObservable();
 
   get isInitialized(): boolean {
     return this._initialized;
@@ -31,8 +31,8 @@ export class AccountDataService {
   createReport(newReport: Report): Promise<OperationResponse<Report>> {
     return this.apiService.createReport(newReport).then(response => {
       if (response.success) {
-        let newCollection = this._profileDataSource.value.concat(response.data);
-        this._profileDataSource.next(newCollection);
+        let newCollection = this._reportDataSource.value.concat(response.data);
+        this._reportDataSource.next(newCollection);
       }
       return response;
     });
@@ -42,10 +42,10 @@ export class AccountDataService {
     return this.apiService.updateReport(updatedReport).then(response => {
 
       if (response.success) {
-        let newCollection: Report[] = this._profileDataSource.value
+        let newCollection: Report[] = this._reportDataSource.value
           .map(report => report.id === updatedReport.id ? updatedReport : report);
           
-        this._profileDataSource.next(newCollection);
+        this._reportDataSource.next(newCollection);
       }
 
       return response;
@@ -55,7 +55,7 @@ export class AccountDataService {
   deleteReport(reportID: string): Promise<OperationResponse<Report>> {
     return this.apiService.deleteReport(reportID).then(response => {
       if (response.success) {
-        let newCollection: Profile[] = [];
+        let newCollection: Report[] = [];
         this._reportDataSource.value.forEach(report => {
           if (report.id !== reportID) {
             newCollection.push(report);
@@ -88,6 +88,6 @@ export class AccountDataService {
     this._initialized = true;
     this._accountDataSource.next(data);
     this._reportDataSource.next(data.reports);
-    this._profileDataSource.next(data.orgData.profiles);
+    this._orgDataSource.next(data.orgData);
   }
 }

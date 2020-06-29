@@ -1,4 +1,5 @@
 import { OperationResponse } from './../../shared/contracts/OperationResponse';
+import { ResponseUtil } from './../util/response';
 
 export class TestUtil {
     static readonly testExternalID = 'Test External ID';
@@ -7,17 +8,7 @@ export class TestUtil {
 
     static logResponse<T>(response: OperationResponse<T>) {
         if (!response.success) {
-            let i = 1;
-            let current = response;
-
-            const log = (message: string) => {
-                console.log(`[${i}] ${message}`); i++;
-            }
-
-            while (!!current) {
-                console.log(`[${i}] Operation failed with message: ${response.message}`);
-                current = response.innerOperation;
-            }
+            ResponseUtil.logResponse(response);
         }
     }
 }
