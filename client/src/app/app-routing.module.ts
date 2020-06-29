@@ -6,6 +6,7 @@ import { AboutComponent } from './about/about.component';
 import { LoginComponent } from './login/login.component';
 import { ProfileDetailComponent } from './pages/profile-detail/profile-detail.component';
 import { ProfileListComponent } from './pages/profile-list/profile-list.component';
+import { DataSourcesComponent } from './pages/data-sources/data-sources.component';
 
 const routes: Routes = [
   { 
@@ -33,6 +34,12 @@ const routes: Routes = [
   { 
     path: 'app/query-permissions', 
     component: AboutComponent, 
+    data: { title: 'Permission Query Tool' },
+  },
+  {
+    path: 'app/data-sources',
+    component: DataSourcesComponent, 
+    canActivate: [ RouteGuardService ],
     data: { title: 'Permission Query Tool' },
   },
   { 

@@ -22,7 +22,7 @@ export class ProfileDetailComponent implements OnInit {
     private dialogService: DialogService,
     private navigationService: NavigationService,
     private notifyService: NotifyService,
-    private profileDataService: AccountDataService,
+    private accountDataService: AccountDataService,
     private waitService: WaitService) {
   }
 
@@ -32,8 +32,8 @@ export class ProfileDetailComponent implements OnInit {
     subs.push(this.route.params.subscribe(params => {
       let profileID = params['id'];
 
-
-      subs.push(this.profileDataService.profileData.subscribe(profiles => {
+      subs.push(this.accountDataService.orgData.subscribe(orgData => {
+        let profiles = orgData.profiles || [];
         let profile = profiles.find(b => b.id === profileID);
         this.data = {...profile } || {};
 
