@@ -1,9 +1,10 @@
 {
   "name": "vastforce",
   "version": "1.0.0",
-  "description": "VastForcecd ..",
-  "main": "app.js",
+  "description": "VastForce",
+  "main": "server/app.js",
   "scripts": {
+    "build": "tsc -p server",
     "test": "./node_modules/.bin/jasmine-node server/spec",
     "start": "node server/app"
   },
@@ -24,7 +25,6 @@
     "express-session": "^1.15.6",
     "jwks-rsa": "^1.8.1",
     "mongoose": "^5.9.19",
-    "morgan": "^1.9.1",
     "uniqid": "^5.0.3"
   },
   "devDependencies": {
