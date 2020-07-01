@@ -1,15 +1,10 @@
-import { OperationResponse } from '../../shared/contracts/OperationResponse';
-import { Account } from '../../shared/models/Account';
-import { IAccountData } from '../data/account-data';
-import { ObjectType } from '../enum/object-type';
-import { ID } from '../util/object-id';
-import { ResponseUtil } from '../util/response';
-
-export interface IAccountLogic {
-    login(externalID: string): Promise<OperationResponse<Account>>;
-    register(externalID: string, userName: string): Promise<OperationResponse<Account>>;
-    getAccountData(externalID: string, accountID: string): Promise<OperationResponse<Account>>;
-}
+import { OperationResponse } from './../../../shared/contracts/OperationResponse';
+import { Account } from './../../../shared/models/Account';
+import { ObjectType } from './../../enum/object-type';
+import { ID } from './../../util/object-id';
+import { ResponseUtil } from './../../util/response';
+import { IAccountData } from './../data-interfaces';
+import { IAccountLogic } from './../logic-interfaces';
 
 export class AccountLogic implements IAccountLogic {
 

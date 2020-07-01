@@ -1,14 +1,7 @@
 import * as mongoose from 'mongoose';
-import { OperationResponse } from '../../shared/contracts/OperationResponse';
-import { ResponseUtil } from '../util/response';
-
-export interface IResourceController<T> {
-    create(data: T): Promise<OperationResponse<T>>;
-    delete(id: string): Promise<OperationResponse<T>>;
-    get(id: string): Promise<OperationResponse<T>>;
-    getByOwnerID(ownerAccountID: string): Promise<OperationResponse<T[]>>;
-    update(id: string, data: T): Promise<OperationResponse<T>>;
-}
+import { OperationResponse } from './../../../shared/contracts/OperationResponse';
+import { ResponseUtil } from './../../util/response';
+import { IResourceController } from './../data-interfaces';
 
 export abstract class ResourceController<T> implements IResourceController<T> {
     abstract model: mongoose.Model<mongoose.Document>;

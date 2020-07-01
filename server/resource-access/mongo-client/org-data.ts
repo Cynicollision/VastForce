@@ -1,9 +1,7 @@
 import * as mongoose from 'mongoose';
-import { Report } from '../../shared/models/Report';
-import { ResourceController, IResourceController } from './controller-base';
-
-export interface IOrgData extends IResourceController<Report> {
-}
+import { Report } from './../../../shared/models/Report';
+import { IOrgData } from './../data-interfaces';
+import { ResourceController } from './controller-base';
 
 export class OrgData extends ResourceController<Report> implements IOrgData {
     modelName = 'OrgData';
