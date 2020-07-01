@@ -32,12 +32,33 @@ export class ResponseUtil {
         let i = 1;
 
         const log = (message: string) => {
-            console.log(`[${i}] ${message}`); i++;
+            console.log(`[${i}] ${message}`); 
+            i++;
         }
 
-        while (!!current) {
+        while (!!current && !current.success) {
             log(`[${i}] Operation failed with message: ${response.message}`);
             current = response.innerOperation;
         }
+    }
+
+    static combineResponses<T>(responses: OperationResponse<any>[]): Promise<OperationResponse<T>> {
+        let message = '';
+        let data = [];
+
+        for (let i = 0; i < responses.length; i++) {
+            message += `${i === 0 ? '' : ' | '}${responses[i].message}`;
+            data.push(responses[i].data);
+        }
+
+        let response = responses.every(res => res.success) 
+            ? this.succeed<T>() 
+            : this.fail<T>(message);
+
+        return Promise.resolve(response);
+    }
+
+    static allSuccess(responses: OperationResponse<any>[]): boolean {
+        return responses.every(res => res.success);
     }
 }

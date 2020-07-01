@@ -1,9 +1,7 @@
 import * as mongoose from 'mongoose';
-import { Report } from '../../shared/models/Report';
-import { ResourceController, IResourceController } from './controller-base';
-
-export interface IReportData extends IResourceController<Report> {
-}
+import { Report } from './../../../shared/models/Report';
+import { IReportData } from './../data-interfaces';
+import { ResourceController } from './controller-base';
 
 export class ReportData extends ResourceController<Report> implements IReportData {
     modelName = 'Report';

@@ -1,14 +1,8 @@
 import * as mongoose from 'mongoose';
-import { OperationResponse } from '../../shared/contracts/OperationResponse';
-import { Account } from '../../shared/models/Account';
-import { ResponseUtil } from '../util/response';
-
-export interface IAccountData {
-    // get(id: string): Promise<OperationResponse<Account>>;
-    getByExternalUserID(externalID: string): Promise<OperationResponse<Account>>;
-    create(data: Account): Promise<OperationResponse<Account>>;
-    update(id: string, data: Account): Promise<OperationResponse<Account>>;
-}
+import { OperationResponse } from './../../../shared/contracts/OperationResponse';
+import { Account } from './../../../shared/models/Account';
+import { ResponseUtil } from './../../util/response';
+import { IAccountData } from './../data-interfaces';
 
 export class AccountData implements IAccountData {
     

@@ -1,22 +1,15 @@
-import { OperationResponse } from '../../shared/contracts/OperationResponse';
-import { ResourceBase } from '../../shared/models/ResourceBase';
-import { IResourceController } from '../data/controller-base';
-import { IAccountData } from '../data/account-data';
-import { ObjectType } from '../enum/object-type';
-import { ID } from '../util/object-id';
-import { ResponseUtil } from '../util/response';
+import { OperationResponse } from './../../../shared/contracts/OperationResponse';
+import { ResourceBase } from './../../../shared/models/ResourceBase';
+import { ObjectType } from './../../enum/object-type';
+import { ID } from './../../util/object-id';
+import { ResponseUtil } from './../../util/response';
+import { IResourceController } from '../data-interfaces';
+import { IAccountData } from './../data-interfaces';
+import { IResourceLogic } from './../logic-interfaces';
 
 export interface ResourceMeta {
     name: string;
     objectType: ObjectType;
-}
-
-export interface IResourceLogic<T> {
-    create(accountExternalID: string, data: T): Promise<OperationResponse<T>>;
-    delete(accountExternalID: string, id: string): Promise<OperationResponse<T>>;
-    get(accountExternalID: string, id: string): Promise<OperationResponse<T>>;
-    getByOwnerID(accountExternalID: string, ownerAccountID: string): Promise<OperationResponse<T[]>>;
-    update(accountExternalID: string, data: T): Promise<OperationResponse<T>>;
 }
 
 export class ResourceLogic<T extends ResourceBase> implements IResourceLogic<T> {

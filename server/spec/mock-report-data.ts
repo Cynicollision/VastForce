@@ -1,4 +1,4 @@
-import { Report } from '../../shared/models/Report';
+import { Report } from './../../shared/models/Report';
 import { MockDataController } from './mock-data';
 
 export class MockReportData extends MockDataController {

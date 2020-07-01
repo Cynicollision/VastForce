@@ -1,6 +1,6 @@
-import { IAccountData } from '../data/account-data';
-import { ObjectType } from '../enum/object-type';
-import { ResourceLogic } from './../logic/logic-base';
+import { ObjectType } from './../enum/object-type';
+import { IAccountData } from './../resource-access/data-interfaces';
+import { ResourceLogic } from './../resource-access/logic/logic-base';
 import { TestData, MockDataController } from './mock-data';
 
 export class MockResourceLogic extends ResourceLogic<TestData> {

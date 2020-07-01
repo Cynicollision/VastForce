@@ -1,9 +1,7 @@
 import * as express from 'express';
 import { Report } from './../../shared/models/Report';
-import { IOrgDataLogic } from './../logic/orgdata-logic';
-import { IReportLogic } from './../logic/report-logic';
+import { IOrgDataLogic, IReportLogic } from './../resource-access/logic-interfaces';
 import { RouteUtil } from './../util/route';
-
 
 export function configureAPIRoutes(app: express.Application, orgDataLogic: IOrgDataLogic, reportLogic: IReportLogic): void {
 
@@ -18,7 +16,6 @@ export function configureAPIRoutes(app: express.Application, orgDataLogic: IOrgD
     // Reports
     app.get('/api/report', (req: express.Request, res: express.Response) => {
         let userExternalID = RouteUtil.getReqExternalID(req);
-        // let reportID = <string>req.query.id;
         let reportID = RouteUtil.getReqQuery(req, 'id');
 
         reportLogic.get(userExternalID, reportID).then(response => res.send(response));

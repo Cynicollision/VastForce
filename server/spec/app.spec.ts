@@ -1,9 +1,9 @@
-import { IAccountLogic, AccountLogic } from './../logic/account-logic';
+import { IAccountLogic, IResourceLogic } from '../resource-access/logic-interfaces';
+import { AccountLogic } from './../resource-access/logic/account-logic';
 import { MockReportData } from './mock-report-data';
 import { MockAccountData } from './mock-account-data';
 import { MockResourceLogic } from './mock-logic';
 import { MockDataController, TestData } from './mock-data';
-import { IResourceLogic } from './../logic/logic-base';
 import { TestUtil } from './test-util';
 
 describe('VastForce app server', () => {

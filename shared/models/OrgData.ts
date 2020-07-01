@@ -11,7 +11,7 @@ export interface Profile extends SFMetadata {
 }
 
 export interface OrgDataMeta {
-    orgID?: string;
+    sfOrgID?: string;
     name?: string;
     lastSyncDate?: string;
     includedMetadataTypes?: SFMetadataType[]; 
