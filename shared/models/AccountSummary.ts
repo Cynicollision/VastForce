@@ -1,5 +1,5 @@
 import { Account } from './Account';
-import { OrgDataMeta } from './OrgDataMeta';
+import { OrgDataMeta } from './OrgData';
 import { Report } from './Report';
 
 export interface AccountSummary {

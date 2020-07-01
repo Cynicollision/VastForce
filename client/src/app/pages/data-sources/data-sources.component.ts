@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { OrgDataMeta } from '../../../../../shared/models/OrgDataMeta';
+import { OrgDataMeta } from '../../../../../shared/models/OrgData';
 import { ListItem } from '../../core/list/list.component';
 import { NavigationService, Navigable } from '../../core/navigation.service';
 import { AccountDataService } from 'src/app/core/account-data.service';

@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { OperationResponse } from '../../../../shared/contracts/OperationResponse';
 import { Account } from './../../../../shared/models/Account';
 import { AccountSummary } from './../../../../shared/models/AccountSummary';
-import { OrgDataMeta } from './../../../../shared/models/OrgDataMeta';
+import { OrgDataMeta } from './../../../../shared/models/OrgData';
 import { Report } from './../../../../shared/models/Report';
 import { APIService } from './api.service';
 import { AuthService } from './auth.service';

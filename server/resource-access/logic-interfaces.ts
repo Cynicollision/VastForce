@@ -2,7 +2,7 @@ import { OperationResponse } from '../../shared/contracts/OperationResponse';
 import { Account } from '../../shared/models/Account';
 import { OrgData } from '../../shared/models/OrgData';
 import { Report } from '../../shared/models/Report';
-import { OrgDataMeta } from '../../shared/models/OrgDataMeta';
+import { OrgDataMeta } from './../../shared/models/OrgData';
 
 export interface IAccountLogic {
     login(externalID: string): Promise<OperationResponse<Account>>;
