@@ -38,6 +38,7 @@ import { ProfileListComponent } from './pages/profile-list/profile-list.componen
 import { QueryPermissionsComponent } from './pages/query-permissions/query-permissions.component';
 import { DataSourcesComponent } from './pages/data-sources/data-sources.component';
 import { DataSourceAddComponent } from './pages/data-source-add/data-source-add.component';
+import { DataSourceViewComponent } from './pages/data-source-view/data-source-view.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { DataSourceAddComponent } from './pages/data-source-add/data-source-add.
     QueryPermissionsComponent,
     DataSourcesComponent,
     DataSourceAddComponent,
+    DataSourceViewComponent,
   ],
   entryComponents: [
     ConfirmComponent,

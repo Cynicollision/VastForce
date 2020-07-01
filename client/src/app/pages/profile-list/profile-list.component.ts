@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Profile } from '../../../../../shared/models/OrgData';
 import { ListItem } from '../../core/list/list.component';
-import { AccountDataService } from '../../core/account-data.service';
 import { NavigationService, Navigable } from '../../core/navigation.service';
 
 @Component({

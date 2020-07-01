@@ -7,6 +7,8 @@ import { LoginComponent } from './login/login.component';
 import { ProfileDetailComponent } from './pages/profile-detail/profile-detail.component';
 import { ProfileListComponent } from './pages/profile-list/profile-list.component';
 import { DataSourcesComponent } from './pages/data-sources/data-sources.component';
+import { DataSourceAddComponent } from './pages/data-source-add/data-source-add.component';
+import { DataSourceViewComponent } from './pages/data-source-view/data-source-view.component';
 
 const routes: Routes = [
   { 
@@ -40,7 +42,19 @@ const routes: Routes = [
     path: 'app/data-sources',
     component: DataSourcesComponent, 
     canActivate: [ RouteGuardService ],
-    data: { title: 'Permission Query Tool' },
+    data: { title: 'Data Sources' },
+  },
+  {
+    path: 'app/data-source/new',
+    component: DataSourceAddComponent, 
+    canActivate: [ RouteGuardService ],
+    data: { title: 'New Data Source' },
+  },
+  {
+    path: 'app/data-source/:id',
+    component: DataSourceViewComponent, 
+    canActivate: [ RouteGuardService ],
+    data: { title: 'New Data Source' },
   },
   { 
     path: 'app/profiles', 

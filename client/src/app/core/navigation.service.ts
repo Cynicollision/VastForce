@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
-import { Observable } from 'rxjs';
 
 export enum Navigable {
   Home,
+  DataSources,
+  DataSourceAdd,
+  DataSourceView,
   ProfileList,
   ProfileDetail,
   QueryPermissions,
@@ -17,8 +19,11 @@ export class NavigationService {
 
   constructor(private route: ActivatedRoute, private router: Router) { 
       this.routeMap.set(Navigable.Home, '/');
-      this.routeMap.set(Navigable.ProfileList, '/profiles');
-      this.routeMap.set(Navigable.ProfileDetail, '/profile');
+      this.routeMap.set(Navigable.DataSources, '/app/data-sources');
+      this.routeMap.set(Navigable.DataSourceAdd, '/app/data-source/new');
+      this.routeMap.set(Navigable.DataSourceView, '/app/data-source');
+      this.routeMap.set(Navigable.ProfileList, '/app/profiles');
+      this.routeMap.set(Navigable.ProfileDetail, '/app/profile');
 
       router.events.subscribe(event => {
         if (event instanceof NavigationEnd) {

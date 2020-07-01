@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { OperationResponse } from '../../../../shared/contracts/OperationResponse';
 import { Account } from './../../../../shared/models/Account';
-import { OrgDataMeta } from './../../../../shared/models/OrgData';
+import { AccountSummary } from './../../../../shared/models/AccountSummary';
+import { DataSourceSummary } from './../../../../shared/models/DataSourceSummary';
 import { Report } from './../../../../shared/models/Report';
 import { APIService } from './api.service';
 import { AuthService } from './auth.service';
@@ -13,7 +14,7 @@ import { AuthService } from './auth.service';
 export class AccountDataService {
   private _initialized = false;
   private _accountDataSource = new BehaviorSubject<Account>(<Account>{});
-  private _orgSummaryDataSource = new BehaviorSubject<OrgDataMeta[]>([]);
+  private _orgSummaryDataSource = new BehaviorSubject<DataSourceSummary[]>([]);
   private _reportDataSource = new BehaviorSubject<Report[]>([]);
 
   accountData = this._accountDataSource.asObservable();
@@ -32,7 +33,7 @@ export class AccountDataService {
     let loadPromise = Promise.resolve(true);
 
     if (needsAccountData) {
-      loadPromise = this.apiService.getAccountData(this.authService.accountID).then(response => {
+      loadPromise = this.apiService.getAccountSummary(this.authService.accountID).then(response => {
         if (!response.success || !response.data) {
           return Promise.resolve(false);
         }
@@ -43,8 +44,8 @@ export class AccountDataService {
     return loadPromise;
   }
 
-  private init(data: Account){
-    this._accountDataSource.next(data);
+  private init(data: AccountSummary){
+    this._accountDataSource.next(data.account);
     this._orgSummaryDataSource.next(data.dataSources);
     this._reportDataSource.next(data.reports);
     this._initialized = true;

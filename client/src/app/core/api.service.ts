@@ -4,6 +4,7 @@ import { Environment } from './../../environments/environment';
 import { AuthService } from './auth.service';
 import { OperationResponse } from './../../../../shared/contracts/OperationResponse';
 import { Account } from './../../../../shared/models/Account';
+import { AccountSummary } from './../../../../shared/models/AccountSummary';
 import { Report } from './../../../../shared/models/Report';
 
 @Injectable({
@@ -39,8 +40,8 @@ export class APIService {
     return this.makePOST(`${Environment.apiBaseURI}/register`, registration);
   }
 
-  getAccountData(profileID: string): Promise<OperationResponse<Account>> {
-    return this.makeGET(`${Environment.apiBaseURI}/account-summary?id=${profileID}`);
+  getAccountSummary(accountID: string): Promise<OperationResponse<AccountSummary>> {
+    return this.makeGET(`${Environment.apiBaseURI}/account-summary?id=${accountID}`);
   }
 
   private makeGET<T>(url: string): Promise<OperationResponse<T>> {

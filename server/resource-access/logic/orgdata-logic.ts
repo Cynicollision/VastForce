@@ -21,14 +21,15 @@ export class OrgDataLogic extends ResourceLogic<OrgData> implements IOrgDataLogi
 
             // TODO: remove
             response.data.push({
-                sfOrgID: '0x1241531', name: 'dev01', lastSyncDate: '6/29/2020', includedMetadataTypes: [ SFMetadataType.ApexClass, SFMetadataType.Flow, SFMetadataType.Layout, SFMetadataType.Workflow ]
+                id: '1', sfOrgID: '0x1241531', name: 'dev01', lastSyncDate: '6/29/2020', includedMetadataTypes: [ SFMetadataType.ApexClass, SFMetadataType.Flow, SFMetadataType.Layout, SFMetadataType.Workflow ]
             });
             response.data.push({
-                sfOrgID: '0x9346034', name: 'production', lastSyncDate: '7/1/2020', includedMetadataTypes: [ SFMetadataType.ApexClass, SFMetadataType.PermissionSet, SFMetadataType.Profile ]
+                id: '2', sfOrgID: '0x9346034', name: 'production', lastSyncDate: '7/1/2020', includedMetadataTypes: [ SFMetadataType.ApexClass, SFMetadataType.PermissionSet, SFMetadataType.Profile ]
             });
 
             return ResponseUtil.succeedAsync(response.data.map(orgData => {
                 return {
+                    id: orgData.id,
                     sfOrgID: orgData.sfOrgID,
                     name: orgData.name,
                     lastSyncDate: orgData.lastSyncDate,

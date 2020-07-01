@@ -1,1 +1,6 @@
-<p>data-sources works!</p>
+<div id="data-sources">
+    <div *ngIf="!!dataSources.length">
+        <app-list [collection]="dataSources" (itemSelected)="viewDataSource($event)"></app-list>
+    </div>
+    <ng-template #elseBlock>You don't have any data sources.</ng-template>
+</div>
