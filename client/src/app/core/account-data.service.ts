@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { OperationResponse } from '../../../../shared/contracts/OperationResponse';
 import { Account } from './../../../../shared/models/Account';
 import { AccountSummary } from './../../../../shared/models/AccountSummary';
-import { DataSourceSummary } from './../../../../shared/models/DataSourceSummary';
+import { OrgDataMeta } from './../../../../shared/models/OrgDataMeta';
 import { Report } from './../../../../shared/models/Report';
 import { APIService } from './api.service';
 import { AuthService } from './auth.service';
@@ -14,7 +14,7 @@ import { AuthService } from './auth.service';
 export class AccountDataService {
   private _initialized = false;
   private _accountDataSource = new BehaviorSubject<Account>(<Account>{});
-  private _orgSummaryDataSource = new BehaviorSubject<DataSourceSummary[]>([]);
+  private _orgSummaryDataSource = new BehaviorSubject<OrgDataMeta[]>([]);
   private _reportDataSource = new BehaviorSubject<Report[]>([]);
 
   accountData = this._accountDataSource.asObservable();

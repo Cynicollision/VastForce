@@ -15,7 +15,7 @@ export class AccountSummaryLogic {
     getAccountData(accountExternalID: string, accountID: string): Promise<OperationResponse<AccountSummary>> {
         return Promise.all([
             this.accountLogic.getAccountData(accountExternalID, accountID), 
-            this.orgDataLogic.getDataSourcesByOwnerID(accountExternalID, accountID), // TODO: implement a 'getSummariesByOwnerID' and return DataSourceSummary[]
+            this.orgDataLogic.getDataSourcesByOwnerID(accountExternalID, accountID),
             this.reportLogic.getByOwnerID(accountExternalID, accountID),
         ]).then(responses => {
             if (!ResponseUtil.allSuccess(responses)) {
