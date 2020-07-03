@@ -2,17 +2,8 @@ import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import * as jwksRsa from 'jwks-rsa';
 import * as jwt from'express-jwt';
-import * as mongoose from 'mongoose';
-import { EnvType } from './enum/env-type';
-import { OperationResponse } from './../shared/contracts/OperationResponse';
-import { ResponseUtil } from './util/response';
-
-export interface AppConfig {
-    envType?: string;
-    port?: string;
-    authConfig?: { authClientID: string; authJwksUri: string, authUri: string };
-    dbConfig?: { mongoUri: string; }
-}
+import { AppConfig, EnvType, ResponseUtil } from './core';
+import { connectMongoDB } from './mongoose/connect';
 
 interface AppConfigCallback {
     (app: express.Application): void;
@@ -30,9 +21,16 @@ export class ExpressAppServer {
         return this;
     }
 
+    private initDefaultConfig() {
+        this.config.envType = this.config.envType || EnvType.Development;
+        this.config.port = this.config.port || '3000';
+    }
+
     start(): void {
         this.configureMiddleware(this.app);
-        this.connectDatabase().then(connectionResponse => {
+
+        // TODO: database connection might not be required or might be a different provider
+        connectMongoDB(this.config.dbConfig.mongoUri).then(connectionResponse => {
             if (!connectionResponse.success) {
                 ResponseUtil.logResponse(connectionResponse);
             }
@@ -87,22 +85,5 @@ export class ExpressAppServer {
         }
 
         this.onConfigureCallback(this.app);
-    }
-
-    private connectDatabase(): Promise<OperationResponse<boolean>> {
-        return new Promise<OperationResponse<boolean>>((resolve, reject) => {
-            mongoose.connect(this.config.dbConfig.mongoUri, { useNewUrlParser: true });
-            mongoose.connection.on('error', () => { 
-                resolve(ResponseUtil.fail(`Database connection error.`));
-            });
-            mongoose.connection.once('open', () => {
-                resolve(ResponseUtil.succeed());
-            });
-        });
-    }
-
-    private initDefaultConfig() {
-        this.config.envType = this.config.envType || EnvType.Development;
-        this.config.port = this.config.port || '3000';
     }
 }

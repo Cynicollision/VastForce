@@ -1,7 +1,6 @@
-import { AppConfig } from './app-server';
-import { EnvType } from './enum/env-type';
+import { AppConfig, EnvType } from './core/core';
 
-export const config: AppConfig= {
+export const config: AppConfig = {
     envType: process.env.NODE_ENV || EnvType.Development,
     port: process.env.PORT,
     authConfig: {

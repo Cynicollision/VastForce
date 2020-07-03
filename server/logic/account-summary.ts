@@ -1,8 +1,8 @@
 import { OperationResponse } from './../../shared/contracts/OperationResponse';
 import { AccountSummary } from './../../shared/models/AccountSummary';
-import { ResponseUtil } from './../util/response';
-
-import { IAccountLogic, IOrgDataLogic, IReportLogic } from '../resource-access/logic-interfaces';
+import { IAccountLogic, ResponseUtil } from './../core/core';
+import { IOrgDataLogic } from './resource-access/orgdata';
+import { IReportLogic } from './resource-access/report';
 
 export class AccountSummaryLogic {
 

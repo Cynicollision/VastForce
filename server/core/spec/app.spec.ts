@@ -1,6 +1,5 @@
-import { IAccountLogic, IResourceLogic } from '../resource-access/logic-interfaces';
-import { AccountLogic } from './../resource-access/logic/account-logic';
-import { MockReportData } from './mock-report-data';
+import { IAccountLogic, IResourceLogic } from './../interfaces';
+import { AccountLogic } from './../logic/account-logic';
 import { MockAccountData } from './mock-account-data';
 import { MockResourceLogic } from './mock-logic';
 import { MockDataController, TestData } from './mock-data';
@@ -118,7 +117,7 @@ describe('VastForce app server', () => {
 
     describe('account logic', () => {
         let accountLogic: IAccountLogic;
-        let mockReportData = new MockReportData();
+        let mockData = new MockDataController();
 
         beforeEach(() => {
             accountLogic = new AccountLogic(mockAccountData);
@@ -132,7 +131,7 @@ describe('VastForce app server', () => {
         });
 
         it('retrieves account data by ID and builds summary info', done => {
-            mockReportData.setCollection([
+            mockData.setCollection([
                 { id: '111', name: 'Test Report 1', ownerAccountID: testAccountID },
                 { id: '222', name: 'Test Report 2', ownerAccountID: testAccountID },
                 { id: '333', name: 'Test Report 3', ownerAccountID: testAccountID },

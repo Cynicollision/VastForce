@@ -1,16 +1,8 @@
 import { OperationResponse } from './../../../shared/contracts/OperationResponse';
 import { ResourceBase } from './../../../shared/models/ResourceBase';
-import { ObjectType } from './../../enum/object-type';
-import { ID } from './../../util/object-id';
-import { ResponseUtil } from './../../util/response';
-import { IResourceController } from '../data-interfaces';
-import { IAccountData } from './../data-interfaces';
-import { IResourceLogic } from './../logic-interfaces';
-
-export interface ResourceMeta {
-    name: string;
-    objectType: ObjectType;
-}
+import { IAccountData, IResourceController, IResourceLogic, ResourceMeta } from './../interfaces';
+import { ObjectID } from './../util/object-id';
+import { ResponseUtil } from './../util/response';
 
 export class ResourceLogic<T extends ResourceBase> implements IResourceLogic<T> {
 
@@ -73,7 +65,7 @@ export class ResourceLogic<T extends ResourceBase> implements IResourceLogic<T> 
                 return validationResponse;
             }
 
-            data.id = ID.new(this.config.objectType);
+            data.id = ObjectID.new(this.config.objectType);
             return this.resourceData.create(data);
         });
     }

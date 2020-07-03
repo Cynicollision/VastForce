@@ -1,10 +1,9 @@
 import { OperationResponse } from './../../../shared/contracts/OperationResponse';
 import { Account } from './../../../shared/models/Account';
-import { ObjectType } from './../../enum/object-type';
-import { ID } from './../../util/object-id';
-import { ResponseUtil } from './../../util/response';
-import { IAccountData } from './../data-interfaces';
-import { IAccountLogic } from './../logic-interfaces';
+import { ObjectType } from './../enum/object-type';
+import { ObjectID } from './../util/object-id';
+import { ResponseUtil } from './../util/response';
+import { IAccountData, IAccountLogic } from './../interfaces';
 
 export class AccountLogic implements IAccountLogic {
 
@@ -36,7 +35,7 @@ export class AccountLogic implements IAccountLogic {
             }
 
             let newAccount = {
-                id: ID.new(ObjectType.Account),
+                id: ObjectID.new(ObjectType.Account),
                 externalID: externalID,
                 name: userName,
             };

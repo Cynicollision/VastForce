@@ -5,7 +5,7 @@
   "main": "server/app.js",
   "scripts": {
     "build": "tsc -p server",
-    "test": "./node_modules/.bin/jasmine-node server/spec",
+    "test": "./node_modules/.bin/jasmine-node server/core/spec",
     "start": "node server/app"
   },
   "repository": {

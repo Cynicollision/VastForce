@@ -1,6 +1,6 @@
 import * as express from 'express';
 
-export class RouteUtil {
+export class ExpressRouteUtil {
 
     static getReqBody<T>(req: express.Request): T {
         return <T>(req.body || {});

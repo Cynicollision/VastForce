@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 import { OperationResponse } from './../../../shared/contracts/OperationResponse';
-import { ResponseUtil } from './../../util/response';
-import { IResourceController } from './../data-interfaces';
+import { IResourceController } from './../interfaces';
+import { ResponseUtil } from './../util/response';
 
 export abstract class ResourceController<T> implements IResourceController<T> {
     abstract model: mongoose.Model<mongoose.Document>;

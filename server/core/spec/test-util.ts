@@ -1,4 +1,4 @@
-import { OperationResponse } from './../../shared/contracts/OperationResponse';
+import { OperationResponse } from './../../../shared/contracts/OperationResponse';
 import { ResponseUtil } from './../util/response';
 
 export class TestUtil {

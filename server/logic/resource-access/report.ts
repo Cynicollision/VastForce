@@ -1,8 +1,11 @@
 import { Report } from './../../../shared/models/Report';
-import { ObjectType } from './../../enum/object-type';
-import { IAccountData, IReportData } from './../data-interfaces';
-import { IReportLogic } from './../logic-interfaces';
-import { ResourceLogic } from './logic-base';
+import { IAccountData, IResourceController, IResourceLogic, ResourceLogic, ObjectType } from './../../core/core';
+
+export interface IReportData extends IResourceController<Report> {
+}
+
+export interface IReportLogic extends IResourceLogic<Report> {
+}
 
 export class ReportLogic extends ResourceLogic<Report> implements IReportLogic {
     constructor(accountData: IAccountData, reportData: IReportData) {

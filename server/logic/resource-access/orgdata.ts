@@ -1,11 +1,14 @@
 import { OperationResponse } from './../../../shared/contracts/OperationResponse'; 
-import { OrgData, OrgDataMeta } from './.././../../shared/models/OrgData';
-import { ObjectType } from './../../enum/object-type';
-import { ResponseUtil } from './../../util/response';
-import { IAccountData, IOrgData } from './../data-interfaces';
-import { IOrgDataLogic } from './../logic-interfaces';
-import { ResourceLogic } from './logic-base';
-import { SFMetadataType } from '../../../shared/models/SFMetadataType';
+import { OrgData, OrgDataMeta } from './../../../shared/models/OrgData';
+import { SFMetadataType } from './../../../shared/models/SFMetadataType';
+import { IAccountData, IResourceController, IResourceLogic, ObjectType, ResourceLogic, ResponseUtil } from './../../core/core';
+
+export interface IOrgData extends IResourceController<OrgData> {
+}
+
+export interface IOrgDataLogic extends IResourceLogic<OrgData> {
+    getDataSourcesByOwnerID(accountExternalID: string, accountID: string): Promise<OperationResponse<OrgDataMeta[]>>;
+}
 
 export class OrgDataLogic extends ResourceLogic<OrgData> implements IOrgDataLogic {
     constructor(accountData: IAccountData, orgData: IOrgData) {

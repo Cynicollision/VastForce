@@ -1,8 +1,8 @@
 import * as mongoose from 'mongoose';
 import { OperationResponse } from './../../../shared/contracts/OperationResponse';
 import { Account } from './../../../shared/models/Account';
-import { ResponseUtil } from './../../util/response';
-import { IAccountData } from './../data-interfaces';
+import { IAccountData } from './../interfaces';
+import { ResponseUtil } from './../util/response';
 
 export class AccountData implements IAccountData {
     

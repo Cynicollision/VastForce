@@ -1,4 +1,4 @@
-import { IOperationResponse, OperationResponse } from '../../shared/contracts/OperationResponse';
+import { IOperationResponse, OperationResponse } from './../../../shared/contracts/OperationResponse';
 
 export class ResponseUtil {
 

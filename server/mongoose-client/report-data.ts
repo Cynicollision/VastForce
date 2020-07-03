@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
-import { Report } from './../../../shared/models/Report';
-import { IReportData } from './../data-interfaces';
-import { ResourceController } from './controller-base';
+import { Report } from './../../shared/models/Report';
+import { ResourceController } from './../core/mongoose/controller-base';
+import { IReportData } from './../logic/resource-access/report'
 
 export class ReportData extends ResourceController<Report> implements IReportData {
     modelName = 'Report';
