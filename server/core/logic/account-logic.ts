@@ -10,61 +10,53 @@ export class AccountLogic implements IAccountLogic {
     constructor(private accountData: IAccountData) {
     }
 
-    login(externalID: string): Promise<OperationResponse<Account>> {
+    async login(externalID: string): Promise<OperationResponse<Account>> {
+        let response = await this.accountData.getByExternalUserID(externalID);
 
-        return this.accountData.getByExternalUserID(externalID).then(response => {
-            let account = response.data;
+        if (!response.data) {
+            return ResponseUtil.failAsync<Account>('Account does not exist for that External ID');
+        }
 
-            if (!account) {
-                return ResponseUtil.failAsync<Account>('Account does not exist for that External ID');
-            }
-
-            return ResponseUtil.succeedAsync<Account>(account);
-        });
+        return ResponseUtil.succeedAsync<Account>(response.data);
     }
 
-    register(externalID: string, userName: string): Promise<OperationResponse<Account>> {
-
+    async register(externalID: string, userName: string): Promise<OperationResponse<Account>> {
         if (!externalID || !userName) {
             return ResponseUtil.failAsync<Account>('Couldn\'t register: External ID and User Name are required.');
         }
 
-        return this.accountData.getByExternalUserID(externalID).then(response => {
-            if (response.success) {
-                return ResponseUtil.failAsync<Account>('Account already exists with that External ID.');
-            }
+        let checkExistingResponse = await this.accountData.getByExternalUserID(externalID);
 
-            let newAccount = {
-                id: ObjectID.new(ObjectType.Account),
-                externalID: externalID,
-                name: userName,
-            };
+        if (checkExistingResponse.success) {
+            return ResponseUtil.failAsync<Account>('Account already exists with that External ID.');
+        }
 
-            return this.accountData.create(newAccount).then(createResponse => {
-                let account = createResponse.data;
+        let newAccount = {
+            id: ObjectID.new(ObjectType.Account),
+            externalID: externalID,
+            name: userName,
+        };
 
-                if (!createResponse.success) {
-                    return ResponseUtil.failAsync<Account>('Failed creating account.', createResponse);
-                }
+        let createResponse = await this.accountData.create(newAccount);
+            
+        if (!createResponse.success) {
+            return ResponseUtil.failAsync<Account>('Failed creating account.', createResponse);
+        }
 
-                return this.login(account.externalID);
-            });
-        });
+        return this.login(createResponse.data.externalID);
     }
 
-    getAccountData(externalID: string, accountID: string): Promise<OperationResponse<Account>> {
+    async getAccountData(externalID: string, accountID: string): Promise<OperationResponse<Account>> {
         if (!externalID || !accountID) {
             return ResponseUtil.failAsync('Couldn\'t retrieve account data: External ID and Account ID are required.');
         }
 
-        return this.accountData.getByExternalUserID(externalID).then(response => {
-            let account = response.data;
+        let response = await this.accountData.getByExternalUserID(externalID);
 
-            if (!response || !response.success || response.data.id !== accountID) {
-                return ResponseUtil.failAsync<Account>('Couldn\'t retrieve account data: Not logged in as claimed account owner.');
-            }
-            
-            return ResponseUtil.succeedAsync<Account>(account);
-        });
+        if (!response || !response.success || response.data.id !== accountID) {
+            return ResponseUtil.failAsync<Account>('Couldn\'t retrieve account data: Not logged in as claimed account owner.');
+        }
+        
+        return ResponseUtil.succeedAsync<Account>(response.data);
     }
 }

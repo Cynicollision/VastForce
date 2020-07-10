@@ -12,92 +12,98 @@ export class ResourceLogic<T extends ResourceBase> implements IResourceLogic<T> 
         private config: ResourceMeta) {
     }
 
-    protected checkUserOwnsAccount(externalID: string, accountID: string): Promise<OperationResponse<T>> {
-        return this.accountData.getByExternalUserID(externalID).then(response => {
-            if (response.data.id !== accountID) {
-                return ResponseUtil.failAsync<T>(`Requestor does not own the resource.`);
-            }
+    protected async checkUserOwnsAccount(externalID: string, accountID: string): Promise<OperationResponse<T>> {
+        let response = await this.accountData.getByExternalUserID(externalID);
 
-            return ResponseUtil.succeedAsync<T>();
-        });
+        if (response.data.id !== accountID) {
+            return ResponseUtil.failAsync<T>(`Requestor does not own the resource.`);
+        }
+
+        return ResponseUtil.succeedAsync<T>();
     }
 
     private get name(): string {
         return this.config.name;
     }
 
-    get(accountExternalID: string, id: string): Promise<OperationResponse<T>> {
-        if (!accountExternalID || !id) {
+    async get(accountExternalID: string, resourceId: string): Promise<OperationResponse<T>> {
+
+        if (!accountExternalID || !resourceId) {
             return ResponseUtil.failAsync(`Couldn\'t fetch ${this.name}: External User ID and Resource ID are required.`);
         }
 
-        return this.resourceData.get(id).then(response => {
-            if (!response.success) {
-                return ResponseUtil.failAsync<T>(`Failed to retrieve resource: ${response.message}.`, response);
-            }
+        let resourceResponse = await this.resourceData.get(resourceId);
 
-            return this.checkUserOwnsAccount(accountExternalID, response.data.ownerAccountID)
-                .then(validationResponse => validationResponse.success ? response : validationResponse);
-        });
+        if (!resourceResponse.success) {
+            return ResponseUtil.failAsync<T>(`Failed to retrieve resource: ${resourceResponse.message}.`, resourceResponse);
+        }
+
+        let validationResponse = await this.checkUserOwnsAccount(accountExternalID, resourceResponse.data.ownerAccountID);
+
+        return validationResponse.success ? resourceResponse : validationResponse;
     }
 
-    getByOwnerID(accountExternalID: string, ownerAccountID: string): Promise<OperationResponse<T[]>> {
+    async getByOwnerID(accountExternalID: string, ownerAccountID: string): Promise<OperationResponse<T[]>> {
         if (!accountExternalID || !ownerAccountID) {
             return ResponseUtil.failAsync<T[]>(`Couldn\'t fetch ${this.name} data: External User ID and Owner ID are required.`);
         }
+        
+        let validationResponse = await this.checkUserOwnsAccount(accountExternalID, ownerAccountID);
 
-        return this.checkUserOwnsAccount(accountExternalID, ownerAccountID).then(validationResponse => {
-           if (!validationResponse.success) {
-               return ResponseUtil.failAsync<T[]>(validationResponse.message, validationResponse);
-           }
+        if (!validationResponse.success) {
+            return ResponseUtil.failAsync<T[]>('Failed validating resource ownership.', validationResponse);
+        }
 
-            return this.resourceData.getByOwnerID(ownerAccountID);
-        });
+        return this.resourceData.getByOwnerID(ownerAccountID);
     }
 
-    create(accountExternalID: string, data: T): Promise<OperationResponse<T>> {
+    async create(accountExternalID: string, data: T): Promise<OperationResponse<T>> {
         if (!data || !data.name) {
             return ResponseUtil.failAsync<T>(`Couldn\'t create ${this.name}: Name is required.`);
         }
 
-        return this.checkUserOwnsAccount(accountExternalID, data.ownerAccountID).then(validationResponse => {
-            if (!validationResponse.success) {
-                return validationResponse;
-            }
+        let validationResponse = await this.checkUserOwnsAccount(accountExternalID, data.ownerAccountID);
 
-            data.id = ObjectID.new(this.config.objectType);
-            return this.resourceData.create(data);
-        });
+        if (!validationResponse.success) {
+            return validationResponse;
+        }
+
+        data.id = ObjectID.new(this.config.objectType);
+
+        return this.resourceData.create(data);
     }
 
-    update(accountExternalID: string, data: T): Promise<OperationResponse<T>> {
+    async update(accountExternalID: string, data: T): Promise<OperationResponse<T>> {
         if (!data || !data.id || !data.name) {
             return ResponseUtil.failAsync<T>(`Couldn\'t update ${this.name}: ID and Name are required.`);
         }
 
-        return this.checkUserOwnsAccount(accountExternalID, data.ownerAccountID).then(validationResponse => {
-            if (!validationResponse.success) {
-                return ResponseUtil.failAsync<T>(validationResponse.message, validationResponse);
-            }
+        let validationResponse = await this.checkUserOwnsAccount(accountExternalID, data.ownerAccountID);
 
-            return this.resourceData.update(data.id, data);
-        });
+        if (!validationResponse.success) {
+            return ResponseUtil.failAsync<T>(validationResponse.message, validationResponse);
+        }
+
+        return this.resourceData.update(data.id, data);
     }
 
-    delete(accountExternalID: string, id: string): Promise<OperationResponse<T>> {
+    async delete(accountExternalID: string, id: string): Promise<OperationResponse<T>> {
+        if (!accountExternalID || !id) {
+            return ResponseUtil.failAsync<T>(`Couldn\'t fetch ${this.name} data: External User ID and Owner ID are required.`);
+        }
 
-        return this.resourceData.get(id).then(response => {
-            if (!response.success) {
-                return ResponseUtil.failAsync<T>(`Couldn\'t retrieve ${this.name} for validation before deleting.`);
-            }
+        let resourceResponse = await this.resourceData.get(id);
 
-            return this.checkUserOwnsAccount(accountExternalID, response.data.ownerAccountID).then(validationResponse => {
-                if (!validationResponse.success) {
-                    return ResponseUtil.failAsync<T>(validationResponse.message, validationResponse);
-                }
-    
-                return this.resourceData.delete(response.data.id);
-            });
-        });
+        if (!resourceResponse.success) {
+            return ResponseUtil.failAsync<T>(`Couldn\'t retrieve ${this.name} for validation before deleting.`);
+        }
+
+        let validationResponse = await this.checkUserOwnsAccount(accountExternalID, resourceResponse.data.ownerAccountID);
+
+        if (!validationResponse.success) {
+            return ResponseUtil.failAsync<T>(validationResponse.message, validationResponse);
+        }
+
+        return this.resourceData.delete(resourceResponse.data.id);
     }
 }

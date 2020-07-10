@@ -4,16 +4,20 @@ import { IAccountLogic, ExpressRouteUtil } from './../core/core';
 
 export function configureAuthRoutes(app: express.Application, accountLogic: IAccountLogic): void {
 
-    app.post('/api/login', (req: express.Request, res: express.Response) => {
+    app.post('/api/login', async (req: express.Request, res: express.Response) => {
         let externalID = ExpressRouteUtil.getReqExternalID(req);
 
-        accountLogic.login(externalID).then(response => res.send(response));
+        let response = await accountLogic.login(externalID);
+
+        res.send(response);
     });
 
-    app.post('/api/register', (req: express.Request, res: express.Response) => {
+    app.post('/api/register', async (req: express.Request, res: express.Response) => {
         let externalID = ExpressRouteUtil.getReqExternalID(req);
         let account = ExpressRouteUtil.getReqBody<Account>(req);
 
-        accountLogic.register(externalID, account.name).then(response => res.send(response));
+        let response = await accountLogic.register(externalID, account.name);
+
+        res.send(response);
     });
 }

@@ -16,30 +16,29 @@ export class OrgDataLogic extends ResourceLogic<OrgData> implements IOrgDataLogi
         super(accountData, orgData, config);
     }
 
-    getDataSourcesByOwnerID(accountExternalID: string, accountID: string): Promise<OperationResponse<OrgDataMeta[]>> {
-        return super.getByOwnerID(accountExternalID, accountID).then(response => {
-            if (!response.success) {
-                return ResponseUtil.failAsync<OrgData[]>('Failed to get Org Summary info.', response);
-            }
+    async getDataSourcesByOwnerID(accountExternalID: string, accountID: string): Promise<OperationResponse<OrgDataMeta[]>> {
+        let response = await super.getByOwnerID(accountExternalID, accountID);
 
-            // TODO: remove
-            response.data.push({
-                id: '1', sfOrgID: '0x1241531', name: 'dev01', lastSyncDate: '6/29/2020', includedMetadataTypes: [ SFMetadataType.ApexClass, SFMetadataType.Flow, SFMetadataType.Layout, SFMetadataType.Workflow ]
-            });
-            response.data.push({
-                id: '2', sfOrgID: '0x9346034', name: 'production', lastSyncDate: '7/1/2020', includedMetadataTypes: [ SFMetadataType.ApexClass, SFMetadataType.PermissionSet, SFMetadataType.Profile ]
-            });
+        if (!response.success) {
+            return ResponseUtil.failAsync<OrgData[]>('Failed to get Org Summary info.', response);
+        }
 
-            return ResponseUtil.succeedAsync(response.data.map(orgData => {
-                return {
-                    id: orgData.id,
-                    sfOrgID: orgData.sfOrgID,
-                    name: orgData.name,
-                    lastSyncDate: orgData.lastSyncDate,
-                    included: orgData.includedMetadataTypes,
-                }
-            }));
+        // TODO: remove
+        response.data.push({
+            id: '1', sfOrgID: '0x1241531', name: 'dev01', lastSyncDate: '6/29/2020', includedMetadataTypes: [ SFMetadataType.ApexClass, SFMetadataType.Flow, SFMetadataType.Layout, SFMetadataType.Workflow ]
         });
-    }
+        response.data.push({
+            id: '2', sfOrgID: '0x9346034', name: 'production', lastSyncDate: '7/1/2020', includedMetadataTypes: [ SFMetadataType.ApexClass, SFMetadataType.PermissionSet, SFMetadataType.Profile ]
+        });
 
+        return ResponseUtil.succeedAsync(response.data.map(orgData => {
+            return {
+                id: orgData.id,
+                sfOrgID: orgData.sfOrgID,
+                name: orgData.name,
+                lastSyncDate: orgData.lastSyncDate,
+                included: orgData.includedMetadataTypes,
+            };
+        }));
+    }
 }
