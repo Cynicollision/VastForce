@@ -1,5 +1,6 @@
 export enum ObjectType {
     Account = '01',
-    Report = '02',
+    Job = '02',
     OrgData = '03',
+    Report = '04',
 }

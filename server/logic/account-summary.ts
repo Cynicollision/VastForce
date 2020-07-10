@@ -12,25 +12,26 @@ export class AccountSummaryLogic {
         private reportLogic: IReportLogic) {
     }
 
-    getAccountData(accountExternalID: string, accountID: string): Promise<OperationResponse<AccountSummary>> {
-        return Promise.all([
+    async getAccountData(accountExternalID: string, accountID: string): Promise<OperationResponse<AccountSummary>> {
+
+        let responses = await Promise.all([
             this.accountLogic.getAccountData(accountExternalID, accountID), 
             this.orgDataLogic.getDataSourcesByOwnerID(accountExternalID, accountID),
             this.reportLogic.getByOwnerID(accountExternalID, accountID),
-        ]).then(responses => {
-            if (!ResponseUtil.allSuccess(responses)) {
-                return ResponseUtil.combineResponses(responses);
-            }
+        ]);
 
-            let [ accountResponse, orgDataResponse, reportDataResponse] = responses;
+        if (!ResponseUtil.allSuccess(responses)) {
+            return ResponseUtil.combineResponses(responses);
+        }
 
-            let summary: AccountSummary = {
-                account: accountResponse.data,
-                dataSources: orgDataResponse.data,
-                reports: reportDataResponse.data,
-            }
+        let [ accountResponse, orgDataResponse, reportDataResponse ] = responses;
 
-            return ResponseUtil.succeedAsync(summary);
-        });
+        let summary: AccountSummary = {
+            account: accountResponse.data,
+            dataSources: orgDataResponse.data,
+            reports: reportDataResponse.data,
+        }
+
+        return ResponseUtil.succeedAsync(summary);
     }
 }
