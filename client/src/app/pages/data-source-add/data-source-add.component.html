@@ -1,3 +1,33 @@
-<div id="data-source-add">
-  Add Data Source
+<div id="data-source-add" class="vast-form">
+  <h3>Connect New Environment</h3>
+  <mat-form-field appearance="outline">
+    <mat-label>Environment Name</mat-label>
+    <input matInput [(ngModel)]="name" required>
+    <mat-error *ngIf="!name">Name is required.</mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Connected App Client ID</mat-label>
+    <input matInput [(ngModel)]="clientID" required>
+    <mat-error *ngIf="!clientID">Client ID is required.</mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Include</mat-label>
+    <mat-select [(ngModel)]="selectedTypes" multiple>
+      <mat-option *ngFor="let type of availableTypes" [value]="type.value">{{type.label}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Login URL Type</mat-label>
+    <mat-select [(ngModel)]="selectedUriType">
+      <mat-option *ngFor="let type of loginUriTypes" [value]="type.value">{{type.label}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Custom URL</mat-label>
+    <input matInput [(ngModel)]="customUri" [disabled]="selectedUriType !== 'custom'">
+  </mat-form-field>
+  <div class="save-cancel">
+    <button mat-flat-button color="primary" (click)="connectSF()"  [disabled]="!canSave">Start</button>
+    <button mat-stroked-button color="primary">Cancel</button>
+  </div>
 </div>

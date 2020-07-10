@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import * as auth0 from 'auth0-js';
 import { Environment } from './../../environments/environment';
 import { Account } from './../../../../shared/models/Account';
+import { NotifyService } from './notify.service';
 
 export interface AuthResult {
   success: boolean;
@@ -20,7 +21,7 @@ export class AuthService {
 
   private auth0 = new auth0.WebAuth(Environment.authConfig);
 
-  constructor(public router: Router) {
+  constructor(public router: Router, private notifyService: NotifyService) {
   }
 
   get accessToken(): string {
@@ -64,7 +65,7 @@ export class AuthService {
       }
 
       return this.handleAuthentication().then(() => {
-        let next: Promise<AuthResult> = Promise.resolve({ success: true, message: 'Client must authenticate.' });
+        let next: Promise<AuthResult> = Promise.resolve({ success: true });
 
         if ((localStorage.getItem('access_token') || '').length) {
           next = this.renewTokens();
@@ -97,9 +98,13 @@ export class AuthService {
         if (authResult && authResult.accessToken && authResult.idToken) {
           return resolve(this.localLogin(authResult));
         }
-        err = err || {};
-        this.logout();
-        return resolve({ success: false, message: `Could not get a new token (${err.error}: ${err.error_description}).` });
+
+        if (!!err) {
+          // this.logout(); TODO
+          this.notifyService.popError(err && err.error ? err.error : err);
+        }
+
+        return resolve({ success: !err, message: `Could not get a new token (${err.error}: ${err.error_description}).` });
       });
     });
   }

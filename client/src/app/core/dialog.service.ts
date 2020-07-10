@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ComponentType } from '@angular/cdk/portal';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ConfirmComponent } from './confirm/confirm.component';
 
 export interface DialogConfig<T> {
   data?: T;
@@ -45,6 +46,16 @@ export class DialogService {
             resolve(result || { cancelled: true });
           });
       });
+    });
+  }
+
+  public popConfirmation<T>(message: string): Promise<DialogResult<T>> {
+    return this.popDialog(ConfirmComponent, { 
+      data: { 
+        message: message,
+        confirm: 'Confirm',
+        cancel: 'Cancel',
+      },
     });
   }
 

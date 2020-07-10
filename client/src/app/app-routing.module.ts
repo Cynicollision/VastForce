@@ -9,6 +9,8 @@ import { ProfileListComponent } from './pages/profile-list/profile-list.componen
 import { DataSourcesComponent } from './pages/data-sources/data-sources.component';
 import { DataSourceAddComponent } from './pages/data-source-add/data-source-add.component';
 import { DataSourceViewComponent } from './pages/data-source-view/data-source-view.component';
+import { JobDetailsComponent } from './pages/job-details/job-details.component';
+import { DataSourceCallbackComponent } from './pages/data-source-callback/data-source-callback.component';
 
 const routes: Routes = [
   { 
@@ -33,11 +35,6 @@ const routes: Routes = [
     component: AboutComponent, 
     data: { title: 'About VastForce' },
   },
-  { 
-    path: 'app/query-permissions', 
-    component: AboutComponent, 
-    data: { title: 'Permission Query Tool' },
-  },
   {
     path: 'app/data-sources',
     component: DataSourcesComponent, 
@@ -51,10 +48,22 @@ const routes: Routes = [
     data: { title: 'New Data Source' },
   },
   {
+    path: 'app/data-source/callback',
+    component: DataSourceCallbackComponent, 
+    canActivate: [ RouteGuardService ],
+    data: { title: 'New Data Source' },
+  },
+  {
     path: 'app/data-source/:id',
     component: DataSourceViewComponent, 
     canActivate: [ RouteGuardService ],
     data: { title: 'New Data Source' },
+  },
+  {
+    path: 'app/job/:id',
+    component: JobDetailsComponent, 
+    canActivate: [ RouteGuardService ],
+    data: { title: 'Job Status' },
   },
   { 
     path: 'app/profiles', 

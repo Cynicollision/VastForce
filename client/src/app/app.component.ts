@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthService } from './core/auth.service';
 import { NavigationService } from './core/navigation.service';
+import { DialogService } from './core/dialog.service';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,7 @@ export class AppComponent {
 
   constructor(private breakpointObserver: BreakpointObserver,
     public authService: AuthService,
+    private dialogService: DialogService,
     private navigationService: NavigationService) {
   }
 
@@ -30,7 +32,11 @@ export class AppComponent {
     return this.navigationService.currentTitle;
   }
 
-  logout(): void {
-    this.authService.logout();
+  async logout(): Promise<void> {
+    let response = await this.dialogService.popConfirmation('Are you sure you want to log out?');
+
+    if (response.data) {
+      return this.authService.logout();
+    }
   }
 }

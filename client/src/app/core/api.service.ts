@@ -5,6 +5,7 @@ import { AuthService } from './auth.service';
 import { OperationResponse } from './../../../../shared/contracts/OperationResponse';
 import { Account } from './../../../../shared/models/Account';
 import { AccountSummary } from './../../../../shared/models/AccountSummary';
+import { Job } from './../../../../shared/models/Job';
 import { Report } from './../../../../shared/models/Report';
 
 @Injectable({
@@ -13,20 +14,6 @@ import { Report } from './../../../../shared/models/Report';
 export class APIService {
 
   constructor(private http: HttpClient, private authService: AuthService) {
-  }
-
-  createReport(report: Report): Promise<OperationResponse<Report>> {
-    report.ownerAccountID = this.authService.accountID;
-    return this.makePOST(`${Environment.apiBaseURI}/report`, report);
-  }
-
-  updateReport(report: Report): Promise<OperationResponse<Report>> {
-    report.ownerAccountID = this.authService.accountID;
-    return this.makePOST(`${Environment.apiBaseURI}/report/${report.id}`, report);
-  }
-
-  deleteReport(reportID: string): Promise<OperationResponse<Report>> {
-    return this.makeDELETE(`${Environment.apiBaseURI}/report/${reportID}`);
   }
 
   loginAccount(): Promise<OperationResponse<Account>> {
@@ -42,6 +29,23 @@ export class APIService {
 
   getAccountSummary(accountID: string): Promise<OperationResponse<AccountSummary>> {
     return this.makeGET(`${Environment.apiBaseURI}/account-summary?id=${accountID}`);
+  }
+
+  startOrgDataJob(job: Job): Promise<OperationResponse<Job>> {
+    return this.makePOST(`${Environment.apiBaseURI}/job/start`, job);
+  }
+
+  createReport(report: Report): Promise<OperationResponse<Report>> {
+    report.ownerAccountID = this.authService.accountID; // TODO: move server-side
+    return this.makePOST(`${Environment.apiBaseURI}/report`, report);
+  }
+
+  updateReport(report: Report): Promise<OperationResponse<Report>> {
+    return this.makePOST(`${Environment.apiBaseURI}/report/${report.id}`, report);
+  }
+
+  deleteReport(reportID: string): Promise<OperationResponse<Report>> {
+    return this.makeDELETE(`${Environment.apiBaseURI}/report/${reportID}`);
   }
 
   private makeGET<T>(url: string): Promise<OperationResponse<T>> {

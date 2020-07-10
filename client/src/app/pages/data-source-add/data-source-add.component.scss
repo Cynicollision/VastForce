@@ -1,0 +1,22 @@
+// TODO: make reusable somehow
+.vast-form {
+    margin: 0 auto;
+    max-width: 800px;
+
+    mat-form-field {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    .save-cancel {
+        text-align: center;
+    
+        button {
+            margin: 0 15px;
+        }
+    }
+}
+
+
+
+

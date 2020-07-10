@@ -1,8 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { APIService } from './api.service';
-import { AuthService } from './auth.service';
 import { RouterTestingModule } from '@angular/router/testing';
 
 describe('APIService', () => {
@@ -13,6 +12,7 @@ describe('APIService', () => {
       imports: [ 
         HttpClientTestingModule,
         RouterTestingModule,
+        MatSnackBarModule,
       ],
       providers: [ 
         APIService,

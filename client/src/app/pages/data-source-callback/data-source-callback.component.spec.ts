@@ -1,35 +1,29 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatSpinner } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatTableModule } from '@angular/material/table';
-import { HomeComponent } from './home.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DataSourceCallbackComponent } from './data-source-callback.component';
 
-describe('HomeComponent', () => {
-  let component: HomeComponent;
-  let fixture: ComponentFixture<HomeComponent>;
+describe('DataSourceCallbackComponent', () => {
+  let component: DataSourceCallbackComponent;
+  let fixture: ComponentFixture<DataSourceCallbackComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ 
+      imports: [
+        RouterTestingModule,
         HttpClientTestingModule,
         MatDialogModule,
         MatSnackBarModule,
-        MatTableModule,
-        RouterTestingModule,
       ],
-      declarations: [
-        MatSpinner,
-        HomeComponent,
-      ]
+      declarations: [ DataSourceCallbackComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HomeComponent);
+    fixture = TestBed.createComponent(DataSourceCallbackComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

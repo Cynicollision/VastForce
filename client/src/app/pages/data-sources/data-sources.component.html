@@ -1,4 +1,7 @@
 <div id="data-sources">
+    <div>
+        <a mat-button routerLink="../data-source/new"><span class="material-icons">create</span>&nbsp;New Data Source</a>
+    </div>
     <div *ngIf="!!dataSources.length">
         <app-list [collection]="dataSources" (itemSelected)="viewDataSource($event)"></app-list>
     </div>

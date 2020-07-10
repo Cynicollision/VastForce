@@ -6,6 +6,8 @@ export enum Navigable {
   DataSources,
   DataSourceAdd,
   DataSourceView,
+  Jobs,
+  JobView,
   ProfileList,
   ProfileDetail,
   QueryPermissions,
@@ -22,6 +24,8 @@ export class NavigationService {
       this.routeMap.set(Navigable.DataSources, '/app/data-sources');
       this.routeMap.set(Navigable.DataSourceAdd, '/app/data-source/new');
       this.routeMap.set(Navigable.DataSourceView, '/app/data-source');
+      this.routeMap.set(Navigable.Jobs, '/app/jobs');
+      this.routeMap.set(Navigable.JobView, '/app/job');
       this.routeMap.set(Navigable.ProfileList, '/app/profiles');
       this.routeMap.set(Navigable.ProfileDetail, '/app/profile');
 

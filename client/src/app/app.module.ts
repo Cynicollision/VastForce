@@ -9,6 +9,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -39,6 +40,8 @@ import { QueryPermissionsComponent } from './pages/query-permissions/query-permi
 import { DataSourcesComponent } from './pages/data-sources/data-sources.component';
 import { DataSourceAddComponent } from './pages/data-source-add/data-source-add.component';
 import { DataSourceViewComponent } from './pages/data-source-view/data-source-view.component';
+import { DataSourceCallbackComponent } from './pages/data-source-callback/data-source-callback.component';
+import { JobDetailsComponent } from './pages/job-details/job-details.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +59,8 @@ import { DataSourceViewComponent } from './pages/data-source-view/data-source-vi
     DataSourcesComponent,
     DataSourceAddComponent,
     DataSourceViewComponent,
+    DataSourceCallbackComponent,
+    JobDetailsComponent,
   ],
   entryComponents: [
     ConfirmComponent,
@@ -72,6 +77,7 @@ import { DataSourceViewComponent } from './pages/data-source-view/data-source-vi
     ReactiveFormsModule,
     MatButtonModule,
     MatCardModule,
+    MatCheckboxModule,
     MatDatepickerModule,
     MatDialogModule,
     MatIconModule,
