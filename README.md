@@ -32,7 +32,7 @@ Then start the server:
 ```
 node app
 ```
-Note: Use `tsc -w` while actively developing.
+Note: Use `tsc -w` and `npm run test-watch` while actively developing.
 ### Packaging
 Copy production Angular build output to folder served by the Express app:
 ```
@@ -43,7 +43,7 @@ Install MongoDB, then run the following to create the development database and u
 ```
 mongo
 use vastforce
-db.createUser({ user: "localdev", pwd: "l0cald3v", roles: [ { role: "readWrite", db: "vastforce-dev" } ], passwordDigestor:"server"})
+db.createUser({ user: "localdev", pwd: "l0cald3v", roles: [ { role: "readWrite", db: "vastforce-dev" } ], passwordDigestor:"server" })
 ```
 ### Deploy to Heroku
 Full build and deploy process. Release branch must have built .js output included.
