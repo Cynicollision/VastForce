@@ -26,17 +26,17 @@ export class ExpressAppServer {
         this.config.port = this.config.port || '3000';
     }
 
-    start(): void {
+    async start(): Promise<void> {
         this.configureMiddleware(this.app);
 
         // TODO: database connection might not be required or might be a different provider
-        connectMongoDB(this.config.dbConfig.mongoUri).then(connectionResponse => {
-            if (!connectionResponse.success) {
-                ResponseUtil.logResponse(connectionResponse);
-            }
-            this.app.listen(this.config.port, () => {
-                console.log(`Application server listening on port ${this.config.port} (${this.config.envType} mode).`);
-            });
+        let connectionResponse = await connectMongoDB(this.config.dbConfig.mongoUri);
+        
+        if (!connectionResponse.success) {
+            ResponseUtil.logResponse(connectionResponse);
+        }
+        this.app.listen(this.config.port, () => {
+            console.log(`Application server listening on port ${this.config.port} (${this.config.envType} mode).`);
         });
     }
 

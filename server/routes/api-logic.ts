@@ -2,28 +2,37 @@ import * as express from 'express';
 import { Job } from './../../shared/models/Job';
 import { ExpressRouteUtil, ResponseUtil } from './../core/core';
 import { AccountSummaryLogic } from './../logic/account-summary';
+import { SFLogic } from './../logic/sf';
 
-export function configureAPILogicRoutes(app: express.Application, accountSummaryLogic: AccountSummaryLogic): void {
+export function configureAPILogicRoutes(app: express.Application, accountSummaryLogic: AccountSummaryLogic, sfLogic: SFLogic): void {
     
     // Account Summary
     app.get('/api/account-summary', async (req: express.Request, res: express.Response) => {
-        let externalID = ExpressRouteUtil.getReqExternalID(req);
+        let externalUserID = ExpressRouteUtil.getReqExternalID(req);
         let accountID = ExpressRouteUtil.getReqQuery(req, 'id');
 
-        let response = await accountSummaryLogic.getAccountData(externalID, accountID);
+        let response = await accountSummaryLogic.getAccountData(externalUserID, accountID);
 
         res.send(response);
     });
 
-    app.post('/api/job/start', (req: express.Request, res: express.Response) => {
+    // Start org data load
+    app.post('/api/org/register', async (req: express.Request, res: express.Response) => {
+        let externalUserID = ExpressRouteUtil.getReqExternalID(req);
+        let job = ExpressRouteUtil.getReqBody<Job>(req);
 
-        // TODO: start SFDX retrieve job, return ID and status
-        let job: Job = {
-            id: '-1',
-            startedAt: Date.now.toString(),
-            status: 'running',
-        };
+        let response = await sfLogic.registerOrg(externalUserID, job);
 
-        res.send(ResponseUtil.succeed(job));
+        res.send(response);
+    });
+
+    // Start job
+    app.post('/api/job/start', async (req: express.Request, res: express.Response) => {
+        let externalUserID = ExpressRouteUtil.getReqExternalID(req);
+        let job = ExpressRouteUtil.getReqBody<Job>(req);
+
+        let response = await sfLogic.startJob(externalUserID, job);
+
+        res.send(response);
     });
 }

@@ -5,6 +5,8 @@ import { ObjectType } from './enum/object-type';
 export interface AppConfig {
     envType?: string;
     port?: string;
+    clientUrl?: string;
+    auth0CallbackUrl?: string;
     authConfig?: { authClientID: string; authJwksUri: string, authUri: string };
     dbConfig?: { mongoUri: string; }
 }

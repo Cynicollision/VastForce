@@ -31,7 +31,11 @@ export class APIService {
     return this.makeGET(`${Environment.apiBaseURI}/account-summary?id=${accountID}`);
   }
 
-  startOrgDataJob(job: Job): Promise<OperationResponse<Job>> {
+  registerOrg(job: Job): Promise<OperationResponse<Job>> {
+    return this.makePOST(`${Environment.apiBaseURI}/org/register`, job);
+  }
+
+  startJob(job: Job): Promise<OperationResponse<Job>> {
     return this.makePOST(`${Environment.apiBaseURI}/job/start`, job);
   }
 

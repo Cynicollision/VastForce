@@ -3,7 +3,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { Environment } from './../../../environments/environment';
 import { Navigable, NavigationService } from './../../core/navigation.service';
 import { APIService } from './../../core/api.service';
-import { timestamp } from 'rxjs/operators';
 
 @Component({
   selector: 'app-data-source-add',
@@ -11,28 +10,20 @@ import { timestamp } from 'rxjs/operators';
   styleUrls: ['./data-source-add.component.scss']
 })
 export class DataSourceAddComponent implements OnInit {
-  availableTypes = [
-    { value: 'metadata', label: 'Metadata' }, // TODO
-    { value: 'user_permissions', label: 'User Permissions' },
-  ];
+  readonly callbackUrl = `${Environment.serverBaseURI}/oauth2/callback`;
 
-  loginUriTypes = [
-    { value: 'sandbox', label: 'Sandbox' },
-    { value: 'production', label: 'Production' },
-    { value: 'custom', label: 'Custom' },
-  ];
-
-  callbackUrl = `${Environment.clientBaseURI}/app/data-source/callback`;
-
+  // TODO
   name = '';
-  clientID = '';
-  selectedUriType = 'sandbox';
-  customUri = 'https://normoyle-dev-ed.lightning.force.com'; // TODO
-  selectedTypes = [];
+  clientId = '3MVG9mclR62wycM3eM0FxhD4ha7IL73vNWrVm3jeclOa8Ognj5jayvqBX9IVStFZTBxbTo.gQjNFDyG_0gW7r';
+
+  orgUrl = 'https://login.salesforce.com'; 
+  loginUrls = [
+    'https://login.salesforce.com',
+    'https://test.salesforce.com',
+  ];
 
   get canSave(): boolean {
-    return !!this.clientID && !!this.name.length && !!this.selectedUriType.length;
-    // TODO: also !!this.selectedTypes.length
+    return !!this.clientId && !!this.name.length && !!this.orgUrl.length;
   }
 
   constructor(@Inject(DOCUMENT) private document: Document, private apiService: APIService, private navigationService: NavigationService) { }
@@ -45,18 +36,12 @@ export class DataSourceAddComponent implements OnInit {
   }
 
   private buildSFLoginUrl(): string {
-    let baseUrl = '';
-    if (this.selectedUriType === 'custom') {
-      baseUrl = this.customUri;
-    }
-    else if (this.selectedUriType === 'production') {
-      baseUrl = 'https://login.salesforce.com';
-    }
-    else {
-      baseUrl = 'https://login.salesforce.com';
-    }
+    let state = JSON.stringify({
+      clientID: this.clientId,
+      orgUrl: this.orgUrl,
+    });
 
-    return `${baseUrl}/services/oauth2/authorize?client_id=${this.clientID}&redirect_uri=${this.callbackUrl}&response_type=code`;
+    return `${this.orgUrl}/services/oauth2/authorize?client_id=${this.clientId}&redirect_uri=${this.callbackUrl}&response_type=code&state=${encodeURI(state)}`;
   }
 
   cancel(): void {

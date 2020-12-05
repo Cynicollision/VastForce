@@ -1,8 +1,9 @@
 import { ResourceBase } from './ResourceBase';
 
 export interface Job extends ResourceBase {
-    details?: string;
-    sfCode?: string;
+    orgId?: string;
+    options?: string[];
     startedAt?: string;
     status?: string;
+    details?: string;
 }

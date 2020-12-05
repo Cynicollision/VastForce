@@ -20,12 +20,14 @@
   },
   "homepage": "https://github.com/Cynicollision/VastForce#readme",
   "dependencies": {
+    "axios": "^0.19.2",
     "errorhandler": "^1.5.0",
     "express": "^4.16.4",
     "express-jwt": "^6.0.0",
     "express-session": "^1.15.6",
     "jwks-rsa": "^1.8.1",
     "mongoose": "^5.9.19",
+    "sfdx-node": "^2.1.2",
     "uniqid": "^5.0.3"
   },
   "devDependencies": {

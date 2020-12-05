@@ -1,1 +1,11 @@
-<p>data-source-callback works!</p>
+<h3>Environment Connected</h3>
+<p>The environment was connected successfully. </p>
+<mat-form-field appearance="outline">
+    <mat-label>Include</mat-label>
+    <mat-select [(ngModel)]="selectedTypes" multiple>
+        <mat-option *ngFor="let type of availableTypes" [value]="type.value">{{type.label}}</mat-option>
+    </mat-select>
+</mat-form-field>
+<div>
+    <button mat-flat-button color="primary" (click)="startJob()">Start Job</button>
+</div>

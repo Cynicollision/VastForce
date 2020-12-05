@@ -4,7 +4,7 @@
 
 export const Environment = {
   apiBaseURI: 'http://localhost:3000/api',
-  clientBaseURI: 'http://localhost:3000',
+  serverBaseURI: 'http://localhost:3000',
   authConfig: {
     clientID: 'FGnxJkAuROymM8pbg9IBz37KKG0xSMgs',
     domain: 'stn-dev.us.auth0.com',

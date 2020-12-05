@@ -7,24 +7,14 @@
   </mat-form-field>
   <mat-form-field appearance="outline">
     <mat-label>Connected App Client ID</mat-label>
-    <input matInput [(ngModel)]="clientID" required>
-    <mat-error *ngIf="!clientID">Client ID is required.</mat-error>
+    <input matInput [(ngModel)]="clientId" required>
+    <mat-error *ngIf="!clientId">Client ID is required.</mat-error>
   </mat-form-field>
   <mat-form-field appearance="outline">
-    <mat-label>Include</mat-label>
-    <mat-select [(ngModel)]="selectedTypes" multiple>
-      <mat-option *ngFor="let type of availableTypes" [value]="type.value">{{type.label}}</mat-option>
+    <mat-label>Login URL</mat-label>
+    <mat-select [(ngModel)]="orgUrl">
+      <mat-option *ngFor="let url of loginUrls" [value]="url">{{url}}</mat-option>
     </mat-select>
-  </mat-form-field>
-  <mat-form-field appearance="outline">
-    <mat-label>Login URL Type</mat-label>
-    <mat-select [(ngModel)]="selectedUriType">
-      <mat-option *ngFor="let type of loginUriTypes" [value]="type.value">{{type.label}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field appearance="outline">
-    <mat-label>Custom URL</mat-label>
-    <input matInput [(ngModel)]="customUri" [disabled]="selectedUriType !== 'custom'">
   </mat-form-field>
   <div class="save-cancel">
     <button mat-flat-button color="primary" (click)="connectSF()"  [disabled]="!canSave">Start</button>
