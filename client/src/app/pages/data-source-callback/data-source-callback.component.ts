@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { OrgRegistration } from './../../../../../shared/contracts/OrgRegistration';
 import { Job } from './../../../../../shared/models/Job';
 import { APIService } from './../../core/api.service';
 import { NavigationService, Navigable } from './../../core/navigation.service';
@@ -30,11 +31,12 @@ export class DataSourceCallbackComponent implements OnInit {
   }
 
   private async registerOrg() {
-    let job: Job = {
-      orgId: this.getOrgIdFromUrl(),
+    let registration: OrgRegistration = {
+      orgId: this.getParamFromUrl('orgId'),
+      registrationId: this.getParamFromUrl('registrationId'),
     };
 
-    let task = this.apiService.registerOrg(job);
+    let task = this.apiService.registerOrg(registration);
 
     let response = await this.waitService.wait(task);
 
@@ -48,7 +50,7 @@ export class DataSourceCallbackComponent implements OnInit {
 
   async startJob() {
     let job: Job = {
-      orgId: this.getOrgIdFromUrl(),
+      orgId: this.getParamFromUrl('orgId'),
       options: this.selectedTypes,
     };
 
@@ -61,9 +63,9 @@ export class DataSourceCallbackComponent implements OnInit {
     }
   }
 
-  private getOrgIdFromUrl(): string {
+  private getParamFromUrl(key: string): string {
     let url = new URL(window.location.href);
     let params = new URLSearchParams(url.search);
-    return params.get('orgId');
+    return params.get(key);
   }
 }

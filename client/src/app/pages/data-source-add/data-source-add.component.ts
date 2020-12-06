@@ -13,7 +13,7 @@ export class DataSourceAddComponent implements OnInit {
   readonly callbackUrl = `${Environment.serverBaseURI}/oauth2/callback`;
 
   // TODO
-  name = '';
+  name = 'Dev';
   clientId = '3MVG9mclR62wycM3eM0FxhD4ha7IL73vNWrVm3jeclOa8Ognj5jayvqBX9IVStFZTBxbTo.gQjNFDyG_0gW7r';
 
   orgUrl = 'https://login.salesforce.com'; 

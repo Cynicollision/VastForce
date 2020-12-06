@@ -1,7 +1,7 @@
-import { OperationResponse } from './../../../shared/contracts/OperationResponse';
-import { ResourceBase } from './../../../shared/models/ResourceBase';
-import { IResourceController } from './../interfaces';
-import { TestUtil } from './test-util';
+import { OperationResponse } from './../../../../shared/contracts/OperationResponse';
+import { ResourceBase } from './../../../../shared/models/ResourceBase';
+import { IResourceController } from './../../interfaces';
+import { TestUtil } from './../test-util';
 
 export interface TestData extends ResourceBase {
 }

@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Environment } from './../../environments/environment';
 import { AuthService } from './auth.service';
 import { OperationResponse } from './../../../../shared/contracts/OperationResponse';
+import { OrgRegistration } from './../../../../shared/contracts/OrgRegistration';
 import { Account } from './../../../../shared/models/Account';
 import { AccountSummary } from './../../../../shared/models/AccountSummary';
 import { Job } from './../../../../shared/models/Job';
@@ -31,8 +32,8 @@ export class APIService {
     return this.makeGET(`${Environment.apiBaseURI}/account-summary?id=${accountID}`);
   }
 
-  registerOrg(job: Job): Promise<OperationResponse<Job>> {
-    return this.makePOST(`${Environment.apiBaseURI}/org/register`, job);
+  registerOrg(registration: OrgRegistration): Promise<OperationResponse<OrgRegistration>> {
+    return this.makePOST(`${Environment.apiBaseURI}/org/register`, registration);
   }
 
   startJob(job: Job): Promise<OperationResponse<Job>> {

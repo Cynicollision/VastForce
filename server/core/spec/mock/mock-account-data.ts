@@ -1,7 +1,7 @@
-import { OperationResponse } from './../../../shared/contracts/OperationResponse';
-import { Account } from './../../../shared/models/Account';
-import { IAccountData } from './../interfaces';
-import { TestUtil } from './test-util';
+import { OperationResponse } from './../../../../shared/contracts/OperationResponse';
+import { Account } from './../../../../shared/models/Account';
+import { IAccountData } from './../../interfaces';
+import { TestUtil } from './../test-util';
 
 export class MockAccountData implements IAccountData {
     

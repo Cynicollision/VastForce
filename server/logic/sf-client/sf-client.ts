@@ -8,7 +8,7 @@ const axios = axiosPkg.default;
 
 export class SFClient {
 
-    async getAccessToken(orgUrl: string, authCode: string, clientId: string): Promise<OperationResponse<string>> {
+    async getAccessToken(orgUrl: string, authCode: string, clientId: string): Promise<OperationResponse<any>> {
         let reqBody = this.buildTokenReqBody(authCode, clientId);
 
         try {
